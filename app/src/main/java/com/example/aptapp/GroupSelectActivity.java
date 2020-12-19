@@ -33,6 +33,8 @@ public class GroupSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_select);
 
+        initTabHost();
+
         int courseNumber = (int)getIntent().getExtras().get("selectedCourse");
 
         // переход на расписание выбранной группы
@@ -60,7 +62,16 @@ public class GroupSelectActivity extends AppCompatActivity {
             }
         });
 
-        // работа со вкладками
+        // запуск процесса получения списка групп
+        GroupsGetter constructionGroupsGetter = new GroupsGetter();
+        constructionGroupsGetter.execute(0, courseNumber, constructionGroupsList, groupsConstruction, groupsConstructionIds);
+
+        GroupsGetter oilGroupsGetter = new GroupsGetter();
+        oilGroupsGetter.execute(1, courseNumber, oilGroupsList, groupsOil, groupsOilIds);
+    }
+
+    // работа со вкладками
+    private void initTabHost(){
         TabHost tabHost = findViewById(R.id.tabHost);
         tabHost.setup();
         TabHost.TabSpec tabSpec;
@@ -75,16 +86,7 @@ public class GroupSelectActivity extends AppCompatActivity {
         tabHost.addTab(tabSpec);
 
         tabHost.setCurrentTabByTag("tagConstruction");
-
-        // запуск процесса получения списка групп
-        GroupsGetter constructionGroupsGetter = new GroupsGetter();
-        constructionGroupsGetter.execute(0, courseNumber, constructionGroupsList, groupsConstruction, groupsConstructionIds);
-
-        GroupsGetter oilGroupsGetter = new GroupsGetter();
-        oilGroupsGetter.execute(1, courseNumber, oilGroupsList, groupsOil, groupsOilIds);
     }
-
-
 
     // получение списка групп в фоновом режиме
     class GroupsGetter extends AsyncTask<Object, Void, Void> {
