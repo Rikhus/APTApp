@@ -31,25 +31,5 @@ public class GroupSelectActivity extends AppCompatActivity {
         TabLayout tabLayoutDepartaments = findViewById(R.id.tabLayoutDepartaments);
         tabLayoutDepartaments.setupWithViewPager(viewPagerGroups);
 
-        /*
-        .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
-                intent.putExtra("group_name", groupsOil.get(position));
-                intent.putExtra("group_id", groupsOilIds.get(position));
-
-                startActivity(intent);
-            }
-        });
-
-        // запуск процесса получения списка групп
-        GroupsGetter constructionGroupsGetter = new GroupsGetter();
-        constructionGroupsGetter.execute(0, courseNumber, constructionGroupsList, groupsConstruction, groupsConstructionIds);
-*/
-
     }
-
-
-
 }
