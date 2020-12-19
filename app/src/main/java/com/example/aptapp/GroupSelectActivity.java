@@ -84,6 +84,8 @@ public class GroupSelectActivity extends AppCompatActivity {
         oilGroupsGetter.execute(1, courseNumber, oilGroupsList, groupsOil, groupsOilIds);
     }
 
+
+
     // получение списка групп в фоновом режиме
     class GroupsGetter extends AsyncTask<Object, Void, Void> {
 
