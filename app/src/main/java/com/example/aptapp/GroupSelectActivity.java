@@ -1,26 +1,14 @@
 package com.example.aptapp;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TabHost;
-import android.widget.Toast;
 
-import com.example.aptapp.Parsing.AptParse;
+import com.example.aptapp.GroupsSelect.GroupsFragmentPagerAdapter;
+import com.example.aptapp.R;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class GroupSelectActivity extends AppCompatActivity {

@@ -1,6 +1,4 @@
-package com.example.aptapp;
-
-import android.content.Context;
+package com.example.aptapp.GroupsSelect;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

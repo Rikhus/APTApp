@@ -1,4 +1,4 @@
-package com.example.aptapp;
+package com.example.aptapp.GroupsSelect;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,13 +15,13 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.aptapp.Parsing.AptParse;
+import com.example.aptapp.R;
+import com.example.aptapp.ScheduleActivity;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class GroupsViewFragment extends Fragment {
 
