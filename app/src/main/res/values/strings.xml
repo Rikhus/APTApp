@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">APTapp</string>
+
+    <string-array name="departaments">
+        <item>Строительное отделение</item>
+        <item>Нефтяное отделение</item>
+    </string-array>
+
+    <string-array name="courses">
+        <item>1 курс</item>
+        <item>2 курс</item>
+        <item>3 курс</item>
+        <item>4 курс</item>
+    </string-array>
+    <string name="connection_error">Ошибка при получении данных</string>
+    <string name="schedule_for">Расписание для</string>
+    <string name="Name">Название</string>
+    <string name="Teacher">Преподаватель</string>
+    <string name="TimeExample">08:00 - 9:25</string>
+    <string name="SubjectNumberExample">I</string>
+    <string name="AuditoriumExample">ауд. 227</string>
+    <string name="select_date">Дата</string>
+    <string name="construction_department">Строительное отделение</string>
+    <string name="oil_department">Нефтяное отделение</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

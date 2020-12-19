@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/subjectLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/subjectInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/subjectNumberView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="8"
+            android:textColor="#000"
+            android:text="@string/SubjectNumberExample"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/subjectNameView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:text="@string/Name"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/subjectTeacherView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="#000"
+        android:text="@string/Teacher"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="2dp">
+
+        <TextView
+            android:id="@+id/subjectTimeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textColor="#000"
+            android:text="@string/TimeExample"
+            android:textSize="16sp" />
+        <TextView
+            android:id="@+id/subjectAuditoriumView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:textColor="#000"
+            android:text="@string/AuditoriumExample"
+            android:textSize="16sp"
+            android:layout_marginStart="5dp" />
+    </LinearLayout>
+
+    <View style="@style/Divider"/>
+
+</LinearLayout>
+

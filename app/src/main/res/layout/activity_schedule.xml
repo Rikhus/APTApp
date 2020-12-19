@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ScheduleActivity">
+
+    <TextView
+        android:id="@+id/scheduleForText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|start"
+        android:layout_margin="10dp"
+        android:text="@string/schedule_for"
+        android:textColor="#000"
+        android:textSize="20sp" />
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textViewDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:gravity="center|start"
+            android:layout_weight="1"
+            android:text=""/>
+        <Button
+            android:id="@+id/buttonSelectDate"
+            android:onClick="selectDate"
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_date" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_margin="10dp"
+        style="@style/Divider" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/scheduleRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+
+</LinearLayout>
