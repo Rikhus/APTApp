@@ -6,13 +6,13 @@
         <item>Нефтяное отделение</item>
     </string-array>
 
-    <string-array name="courses">
-        <item>1 курс</item>
-        <item>2 курс</item>
-        <item>3 курс</item>
-        <item>4 курс</item>
-    </string-array>
+    <string name="first_course">Первый курс</string>
+    <string name="second_course">Второй курс</string>
+    <string name="third_course">Третий курс</string>
+    <string name="fourth_course">Четвертый курс</string>
+
     <string name="connection_error">Ошибка при получении данных</string>
+
     <string name="schedule_for">Расписание для</string>
     <string name="Name">Название</string>
     <string name="Teacher">Преподаватель</string>
@@ -20,8 +20,8 @@
     <string name="SubjectNumberExample">I</string>
     <string name="AuditoriumExample">ауд. 227</string>
     <string name="select_date">Дата</string>
+
     <string name="construction_department">Строительное отделение</string>
     <string name="oil_department">Нефтяное отделение</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
