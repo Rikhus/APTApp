@@ -6,6 +6,7 @@
 */
 package com.example.aptapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.DatePicker;
@@ -24,6 +26,9 @@ import com.example.aptapp.Parsing.AptParse;
 import com.example.aptapp.Parsing.Subject;
 import com.example.aptapp.Parsing.SubjectAdapter;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,8 +40,11 @@ public class ScheduleActivity extends AppCompatActivity {
     TextView textViewDate;
     ScheduleGetter scheduleGetter;
     String groupId;
+    String groupName;
     SimpleDateFormat sdf;
     SubjectAdapter adapter;
+
+    private final String DATE_VARIABLE = "DATE_VARIABLE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +56,12 @@ public class ScheduleActivity extends AppCompatActivity {
         // получение выбранной группы
         Intent groupsIntent = getIntent();
         groupId = groupsIntent.getStringExtra("group_id");
+        groupName = groupsIntent.getStringExtra("group_name");
+
         TextView scheduleForText = findViewById(R.id.scheduleForText);
-        scheduleForText.setText(getResources().getString(R.string.schedule_for) + " " +
-                groupsIntent.getStringExtra("group_name") + "(" +groupId + ")");
+        String scheduleForString = getResources().getString(R.string.schedule_for) + " " + groupName
+                + "(" +groupId + ")";
+        scheduleForText.setText(scheduleForString);
 
         // инициализация графических элементов
         textViewDate = findViewById(R.id.textViewDate);
@@ -68,6 +79,58 @@ public class ScheduleActivity extends AppCompatActivity {
         scheduleGetter.execute(
                 groupsIntent.getStringExtra("group_id"),
                 sdf.format(new Date()));
+
+    }
+
+    // при перевороте телефона нужно чтоб дата сохранялась
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(DATE_VARIABLE, sdf.format(dateAndTime.getTime()));
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        try {
+            dateAndTime.setTime(sdf.parse(savedInstanceState.getString(DATE_VARIABLE)));
+            textViewDate.setText(formatDate(dateAndTime));
+
+            scheduleGetter.cancel(true);
+            scheduleGetter = new ScheduleGetter();
+            scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // при выходе из приложения сохраняем данные о текущем расписании (дату, группу)
+
+    @Override
+    protected void onStop() {
+        FileOutputStream fos = null;
+
+        try{
+            // открываем файл и записываем данные
+            fos = openFileOutput(Constants.FILENAME, MODE_PRIVATE);
+            String data = "group_id: " + groupId +":" +
+                    "group_name: " + groupName;
+            fos.write(data.getBytes());
+        }
+        catch (IOException ex){
+            System.out.println("error while writing to file");
+        }
+        finally {
+            try{
+                if (fos != null) fos.close();
+            }
+            catch (IOException ex){
+                System.out.println("error while closing file stream");
+            }
+        }
+
+        super.onStop();
     }
 
     // выбор даты
