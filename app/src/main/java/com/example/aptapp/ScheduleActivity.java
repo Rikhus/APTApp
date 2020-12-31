@@ -6,6 +6,7 @@
 */
 package com.example.aptapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.DatePicker;
@@ -24,6 +26,7 @@ import com.example.aptapp.Parsing.AptParse;
 import com.example.aptapp.Parsing.Subject;
 import com.example.aptapp.Parsing.SubjectAdapter;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,6 +40,8 @@ public class ScheduleActivity extends AppCompatActivity {
     String groupId;
     SimpleDateFormat sdf;
     SubjectAdapter adapter;
+
+    private final String DATE_VARIABLE = "DATE_VARIABLE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,30 @@ public class ScheduleActivity extends AppCompatActivity {
         scheduleGetter.execute(
                 groupsIntent.getStringExtra("group_id"),
                 sdf.format(new Date()));
+
+    }
+
+    // при перевороте телефона нужно чтоб дата сохранялась
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(DATE_VARIABLE, sdf.format(dateAndTime.getTime()));
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        try {
+            dateAndTime.setTime(sdf.parse(savedInstanceState.getString(DATE_VARIABLE)));
+            textViewDate.setText(formatDate(dateAndTime));
+
+            scheduleGetter.cancel(true);
+            scheduleGetter = new ScheduleGetter();
+            scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     // выбор даты
