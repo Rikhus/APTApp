@@ -26,6 +26,8 @@ import com.example.aptapp.Parsing.AptParse;
 import com.example.aptapp.Parsing.Subject;
 import com.example.aptapp.Parsing.SubjectAdapter;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class ScheduleActivity extends AppCompatActivity {
     TextView textViewDate;
     ScheduleGetter scheduleGetter;
     String groupId;
+    String groupName;
     SimpleDateFormat sdf;
     SubjectAdapter adapter;
 
@@ -53,9 +56,12 @@ public class ScheduleActivity extends AppCompatActivity {
         // получение выбранной группы
         Intent groupsIntent = getIntent();
         groupId = groupsIntent.getStringExtra("group_id");
+        groupName = groupsIntent.getStringExtra("group_name");
+
         TextView scheduleForText = findViewById(R.id.scheduleForText);
-        scheduleForText.setText(getResources().getString(R.string.schedule_for) + " " +
-                groupsIntent.getStringExtra("group_name") + "(" +groupId + ")");
+        String scheduleForString = getResources().getString(R.string.schedule_for) + " " + groupName
+                + "(" +groupId + ")";
+        scheduleForText.setText(scheduleForString);
 
         // инициализация графических элементов
         textViewDate = findViewById(R.id.textViewDate);
@@ -97,6 +103,34 @@ public class ScheduleActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    // при выходе из приложения сохраняем данные о текущем расписании (дату, группу)
+
+    @Override
+    protected void onStop() {
+        FileOutputStream fos = null;
+
+        try{
+            // открываем файл и записываем данные
+            fos = openFileOutput(Constants.FILENAME, MODE_PRIVATE);
+            String data = "group_id: " + groupId +":" +
+                    "group_name: " + groupName;
+            fos.write(data.getBytes());
+        }
+        catch (IOException ex){
+            System.out.println("error while writing to file");
+        }
+        finally {
+            try{
+                if (fos != null) fos.close();
+            }
+            catch (IOException ex){
+                System.out.println("error while closing file stream");
+            }
+        }
+
+        super.onStop();
     }
 
     // выбор даты
