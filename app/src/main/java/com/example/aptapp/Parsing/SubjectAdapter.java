@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aptapp.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextViewHolder> {
+public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextViewHolder> implements Serializable {
     private ArrayList<Subject> subjects = new ArrayList<>();
 
     class TextViewHolder extends RecyclerView.ViewHolder{
