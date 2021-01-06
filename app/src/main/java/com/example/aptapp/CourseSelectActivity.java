@@ -26,8 +26,11 @@ public class CourseSelectActivity extends AppCompatActivity {
             byte[] bytes = new byte[fin.available()];
             fin.read(bytes);
             String text = new String(bytes);
+
             String groupId = text.split(":")[1];
             String groupName = text.split(":")[3];
+            groupId = groupId.replace(" ", "");
+            groupName = groupName.replace(" ", "");
 
             Intent intent = new Intent(this, ScheduleActivity.class);
             intent.putExtra("group_id", groupId);

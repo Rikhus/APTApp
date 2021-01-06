@@ -45,6 +45,7 @@ public class ScheduleActivity extends AppCompatActivity {
     SubjectAdapter adapter;
 
     private final String DATE_VARIABLE = "DATE_VARIABLE";
+    private final String DATA_ADAPTER = "DATA_ADAPTER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,28 +68,33 @@ public class ScheduleActivity extends AppCompatActivity {
         textViewDate = findViewById(R.id.textViewDate);
         scheduleRecyclerView = findViewById(R.id.scheduleRecyclerView);
         scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SubjectAdapter();
-        scheduleRecyclerView.setAdapter(adapter);
 
-        // по умолчанию расписание на сегодня
-        dateAndTime.setTime(new Date());
-        textViewDate.setText(formatDate(dateAndTime));
+        // если это активити запущено с нуля
+        if (savedInstanceState == null){
+            adapter = new SubjectAdapter();
+            scheduleRecyclerView.setAdapter(adapter);
 
-        // запуск асинхронной загрузки данных
-        scheduleGetter = new ScheduleGetter();
-        scheduleGetter.execute(
-                groupsIntent.getStringExtra("group_id"),
-                sdf.format(new Date()));
+            // по умолчанию расписание на сегодня
+            dateAndTime.setTime(new Date());
+            textViewDate.setText(formatDate(dateAndTime));
 
+            // запуск асинхронной загрузки данных
+            scheduleGetter = new ScheduleGetter();
+            scheduleGetter.execute(
+                    groupsIntent.getStringExtra("group_id"),
+                    sdf.format(new Date()));
+        }
     }
 
-    // при перевороте телефона нужно чтоб дата сохранялась
+    // при перевороте телефона нужно чтоб данные сохранялись
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString(DATE_VARIABLE, sdf.format(dateAndTime.getTime()));
+        outState.putSerializable(DATA_ADAPTER, adapter);
         super.onSaveInstanceState(outState);
     }
 
+    // тут восстанавливаем данные
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -97,9 +103,17 @@ public class ScheduleActivity extends AppCompatActivity {
             dateAndTime.setTime(sdf.parse(savedInstanceState.getString(DATE_VARIABLE)));
             textViewDate.setText(formatDate(dateAndTime));
 
-            scheduleGetter.cancel(true);
-            scheduleGetter = new ScheduleGetter();
-            scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
+            if (scheduleGetter != null){
+                scheduleGetter.cancel(true);
+            }
+            adapter = (SubjectAdapter)savedInstanceState.getSerializable(DATA_ADAPTER);
+            if (adapter == null) {
+                scheduleGetter = new ScheduleGetter();
+                scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
+            }
+            else{
+                scheduleRecyclerView.setAdapter(adapter);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -151,8 +165,9 @@ public class ScheduleActivity extends AppCompatActivity {
             dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             textViewDate.setText(formatDate(dateAndTime));
 
-
-            scheduleGetter.cancel(true);
+            if (scheduleGetter != null){
+                scheduleGetter.cancel(true);
+            }
             scheduleGetter = new ScheduleGetter();
             scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
         }
