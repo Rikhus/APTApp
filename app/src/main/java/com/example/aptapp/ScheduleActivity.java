@@ -1,9 +1,3 @@
-/* TODO:
-сделать выбор дат
-сделать разделение по подгруппам
-сделать получше дизайн
-попробовать оптимизировать
-*/
 package com.example.aptapp;
 
 import androidx.annotation.NonNull;
@@ -89,8 +83,12 @@ public class ScheduleActivity extends AppCompatActivity {
     // при перевороте телефона нужно чтоб данные сохранялись
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        // тут запоминаем дату
         outState.putString(DATE_VARIABLE, sdf.format(dateAndTime.getTime()));
-        outState.putSerializable(DATA_ADAPTER, adapter);
+
+        // засовываем адаптер в класс с константами
+        if (adapter != null) Constants.adapter = adapter;
+
         super.onSaveInstanceState(outState);
     }
 
@@ -106,7 +104,7 @@ public class ScheduleActivity extends AppCompatActivity {
             if (scheduleGetter != null){
                 scheduleGetter.cancel(true);
             }
-            adapter = (SubjectAdapter)savedInstanceState.getSerializable(DATA_ADAPTER);
+            adapter = Constants.adapter;
             if (adapter == null) {
                 scheduleGetter = new ScheduleGetter();
                 scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));

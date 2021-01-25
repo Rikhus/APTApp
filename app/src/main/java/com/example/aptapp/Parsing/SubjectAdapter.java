@@ -13,7 +13,7 @@ import com.example.aptapp.R;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextViewHolder> implements Serializable {
+public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextViewHolder>{
     private ArrayList<Subject> subjects = new ArrayList<>();
 
     class TextViewHolder extends RecyclerView.ViewHolder{
