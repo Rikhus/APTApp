@@ -14,14 +14,16 @@
     <string name="connection_error">Ошибка при получении данных</string>
 
     <string name="schedule_for">Расписание для</string>
-    <string name="Name">Название</string>
-    <string name="Teacher">Преподаватель</string>
-    <string name="TimeExample">08:00 - 9:25</string>
-    <string name="SubjectNumberExample">I</string>
-    <string name="AuditoriumExample">ауд. 227</string>
-    <string name="select_date">Дата</string>
+    <string name="name">Название</string>
+    <string name="teacher">Преподаватель</string>
+    <string name="time_start">08:00</string>
+    <string name="auditorium_example">ауд. 227</string>
+    <string name="select_date">Выбор даты</string>
+    <string name="auditorium">ауд.</string>
 
     <string name="construction_department">Строительное отделение</string>
     <string name="oil_department">Нефтяное отделение</string>
+    <string name="choose_group">Выберите группу</string>
+    <string name="time_end">09:25</string>
 
 </resources>

@@ -14,6 +14,21 @@
     </style>
 
     <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryDark">#fafafa</item>
+        <item name="android:textViewStyle">@style/Exo2TextViewStyle</item>
+        <item name="android:buttonStyle">@style/Exo2ButtonStyle</item>
+    </style>
+
+    <style name="Exo2TextViewStyle" parent="Widget.AppCompat.TextView">
+        <item name="fontFamily">@font/exo_2</item>
+    </style>
+    <style name="Exo2ButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="fontFamily">@font/exo_2</item>
+    </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">#9B51E0</item>
+        <item name="fontFamily">@font/exo_2</item>
     </style>
 
 </resources>

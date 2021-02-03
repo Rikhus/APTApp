@@ -10,47 +10,54 @@
     <TextView
         android:id="@+id/scheduleForText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center|start"
-        android:layout_margin="10dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
         android:text="@string/schedule_for"
-        android:textColor="#000"
+        android:textColor="#5F5F5F"
+        android:layout_weight="18"
         android:textSize="20sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/scheduleRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_weight="4"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"/>
     <LinearLayout
-        android:layout_margin="10dp"
+        android:background="@drawable/rounded_date_menu"
+        android:backgroundTint="#9B51E0"
+        android:layout_weight="17"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/textViewDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:textSize="18sp"
-            android:gravity="center|start"
+            android:gravity="center"
             android:layout_weight="1"
             android:text=""/>
         <Button
             android:id="@+id/buttonSelectDate"
             android:onClick="selectDate"
-            android:layout_weight="3"
+            android:layout_weight="2"
+            android:background="@drawable/rouned_button"
+            android:backgroundTint="#FFFFFF"
+            android:textColor="#9B51E0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_date" />
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="22dp"
+            android:layout_marginRight="10dp"
+            android:text="@string/select_date"
+            android:gravity="center"
+            android:layout_marginEnd="10dp" />
     </LinearLayout>
-
-    <View
-        android:id="@+id/view"
-        android:layout_margin="10dp"
-        style="@style/Divider" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/scheduleRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-
-
 
 </LinearLayout>

@@ -45,55 +45,70 @@ public class AptParse {
 
                 // отсекаем консультации и прочее
                 if(subjectHTML.select(".card-header").size() != 0 && subjectHTML.select(".card-header.text-center").size() == 0){
-                    // если разделено по подгруппам
-                    // первая п.гр
-                    if(subjectHTML.select(".subGroup1").size() != 0 || subjectHTML.select(".subGroup2").size() != 0){
+                    // если разделено по подгруппам и если пара есть для обоих подгрупп
+                    if(subjectHTML.select(".subGroup1").size() != 0 && subjectHTML.select(".subGroup2").size() != 0){
+                        // сначала выясняем пару для первой подгруппы
+                        Element subjectHTML1 = subjectHTML.selectFirst(".subGroup1");
+                        subject.firstSubgroupSubjectName = "(1 п/гр) " + subjectHTML1.selectFirst(".h5 .d-md-none.text-center").text();
+                        subject.firstSubgroupSubjectAuditorium = subjectHTML1.selectFirst(".text-truncate .h5 a").text();
+                        // потом для второй
+                        Element subjectHTML2 = subjectHTML.selectFirst(".subGroup2");
+                        subject.secondSubgroupSubjectName = "(2 п/гр) " + subjectHTML2.selectFirst(".h5 .d-md-none.text-center").text();
+                        subject.secondSubgroupSubjectAuditorium = subjectHTML2.selectFirst(".text-truncate .h5 a").text();
+
+                        // потом добавляем время
+                        String subjectTime = subjectHTML.selectFirst(".text-truncate .h4").text();
+                        subject.subjectTimeStart =
+                                subjectTime.substring(0,2) + ":" +
+                                        subjectTime.substring(2,5);
+                        subject.subjectTimeEnd =
+                                subjectTime.substring(7,9) + ":" +
+                                        subjectTime.substring(9);
+                        subject.subjectType = Subject.SubjectType.FOR_ALL_SUBGROUPS_SEPARATELY;
+
+                    }
+                    // если пара есть только для одной из подгрупп
+                    else if(subjectHTML.select(".subGroup1").size() != 0 ^ subjectHTML.select(".subGroup2").size() != 0){
+                        // если для первой вытаскиваем расписание для нее
                         if(subjectHTML.select(".subGroup1").size() != 0){
                             Element subjectHTML1 = subjectHTML.selectFirst(".subGroup1");
-                            Subject subject1 = new Subject();
-                            subject1.subjectTeacher = subjectHTML1.selectFirst(".d-md-block").text();
-                            subject1.subjectName = "(1 п/гр) " + subjectHTML1.selectFirst(".h5 .d-none.d-md-block").text();
-                            subject1.subjectAuditorium = subjectHTML1.selectFirst(".text-truncate .h5 a").text();
-                            subject1.subjectNumber = subjectHTML.selectFirst(".text-truncate .h3").text();
-                            // для оформления времени
-                            String subjectTime = subjectHTML.selectFirst(".text-truncate .h4").text();
-                            subject1.subjectTime =
-                                    subjectTime.substring(0,2) + ":" +
-                                            subjectTime.substring(2,9) + ":" +
-                                            subjectTime.substring(9);
-                            schedule.add(subject1);
+                            subject.subjectName = "(1 п/гр) " + subjectHTML1.selectFirst(".h5 .d-md-none.text-center").text();
+                            subject.subjectAuditorium = subjectHTML1.selectFirst(".text-truncate .h5 a").text();
+                            subject.subjectType = Subject.SubjectType.FOR_FIRST_SUBGROUP_ONLY;
                         }
+                        // если для второй, то для нее
                         if(subjectHTML.select(".subGroup2").size() != 0){
                             Element subjectHTML2 = subjectHTML.selectFirst(".subGroup2");
-                            Subject subject2 = new Subject();
-                            subject2.subjectTeacher = subjectHTML2.selectFirst(".d-md-block").text();
-                            subject2.subjectName = "(2 п/гр) " + subjectHTML2.selectFirst(".h5 .d-none.d-md-block").text();
-                            subject2.subjectAuditorium = subjectHTML2.selectFirst(".text-truncate .h5 a").text();
-                            subject2.subjectNumber = subjectHTML.selectFirst(".text-truncate .h3").text();
-                            // для оформления времени
-                            String subjectTime = subjectHTML.selectFirst(".text-truncate .h4").text();
-                            subject2.subjectTime =
-                                    subjectTime.substring(0,2) + ":" +
-                                            subjectTime.substring(2,9) + ":" +
-                                            subjectTime.substring(9);
-                            schedule.add(subject2);
+                            subject.subjectName = "(2 п/гр) " + subjectHTML2.selectFirst(".h5 .d-md-none.text-center").text();
+                            subject.subjectAuditorium = subjectHTML2.selectFirst(".text-truncate .h5 a").text();
+                            subject.subjectType = Subject.SubjectType.FOR_SECOND_SUBGROUP_ONLY;
                         }
-
-                    }
-                    else{
-                        subject.subjectTeacher = subjectHTML.selectFirst(".d-md-block").text();
-                        subject.subjectName = subjectHTML.selectFirst(".h5 .d-none.d-md-block").text();
-                        subject.subjectAuditorium = subjectHTML.selectFirst(".text-truncate .h5 a").text();
-                        subject.subjectNumber = subjectHTML.selectFirst(".text-truncate .h3").text();
-                        // для оформления времени
+                        // и вытаскиваем время
                         String subjectTime = subjectHTML.selectFirst(".text-truncate .h4").text();
-                        subject.subjectTime =
+                        subject.subjectTimeStart =
                                 subjectTime.substring(0,2) + ":" +
-                                        subjectTime.substring(2,9) + ":" +
+                                        subjectTime.substring(2,5);
+                        subject.subjectTimeEnd =
+                                subjectTime.substring(7,9) + ":" +
                                         subjectTime.substring(9);
-                        schedule.add(subject);
                     }
-
+                    // а тут если пара общая для всех
+                    else{
+                        // название и аудитория
+                        subject.subjectName = subjectHTML.selectFirst(".h5 .d-md-none.text-center").text();
+                        subject.subjectAuditorium = subjectHTML.selectFirst(".text-truncate .h5 a").text();
+                        // вытаскиваем время
+                        String subjectTime = subjectHTML.selectFirst(".text-truncate .h4").text();
+                        subject.subjectTimeStart =
+                                subjectTime.substring(0,2) + ":" +
+                                        subjectTime.substring(2,5);
+                        subject.subjectTimeEnd =
+                                subjectTime.substring(7,9) + ":" +
+                                        subjectTime.substring(9);
+                        subject.subjectType = Subject.SubjectType.FOR_ALL_SUBGROUPS;
+                    }
+                    // довабляем элемент в список
+                    schedule.add(subject);
                 }
             }
         }
@@ -104,7 +119,7 @@ public class AptParse {
 
         // если расписания на этот день нет
         if (schedule.size() == 0){
-            Subject subjectNull = new Subject("На этот день нет расписания", "", "", "", "");
+            Subject subjectNull = new Subject("На этот день нет расписания", "", "", "", Subject.SubjectType.FOR_ALL_SUBGROUPS);
             schedule.add(subjectNull);
         }
         return schedule;

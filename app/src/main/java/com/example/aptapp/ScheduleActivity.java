@@ -147,7 +147,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
     // выбор даты
     public void selectDate(View view) {
-        new DatePickerDialog(ScheduleActivity.this, selectDateListener,
+        new DatePickerDialog(ScheduleActivity.this, R.style.DialogTheme, selectDateListener,
                 dateAndTime.get(Calendar.YEAR),
                 dateAndTime.get(Calendar.MONTH),
                 dateAndTime.get(Calendar.DAY_OF_MONTH))
