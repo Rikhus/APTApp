@@ -2,17 +2,30 @@ package com.example.aptapp.Parsing;
 
 public class Subject {
     public String subjectName = "";
-    public String subjectTeacher = "";
     public String subjectAuditorium = "";
-    public String subjectNumber = "";
-    public String subjectTime = "";
+    public String subjectTimeStart = "";
+    public String subjectTimeEnd = "";
 
-    Subject(String _subjectName, String _subjectTeacher, String _subjectAuditorium, String _subjectNumber, String _subjectTime){
-        subjectName = _subjectName;
-        subjectTeacher = _subjectTeacher;
-        subjectAuditorium = _subjectAuditorium;
-        subjectNumber = _subjectNumber;
-        subjectTime = _subjectTime;
+    public static enum SubjectType{
+        FOR_ALL_SUBGROUPS,
+        FOR_FIRST_SUBGROUP_ONLY,
+        FOR_SECOND_SUBGROUP_ONLY,
+        FOR_ALL_SUBGROUPS_SEPARATELY
+    }
+    public SubjectType subjectType;
+
+    public String firstSubgroupSubjectName = "";
+    public String firstSubgroupSubjectAuditorium = "";
+
+    public String secondSubgroupSubjectName = "";
+    public String secondSubgroupSubjectAuditorium = "";
+
+    public Subject(String subjectName, String subjectAuditorium, String subjectTimeStart, String subjectTimeEnd, SubjectType subjectType) {
+        this.subjectName = subjectName;
+        this.subjectAuditorium = subjectAuditorium;
+        this.subjectTimeStart = subjectTimeStart;
+        this.subjectTimeEnd = subjectTimeEnd;
+        this.subjectType = subjectType;
     }
 
     Subject(){

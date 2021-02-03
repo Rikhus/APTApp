@@ -5,26 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GroupSelectActivity"
-    android:orientation="vertical"
-    android:layout_margin="10dp">
+    android:orientation="vertical">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayoutDepartaments"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/construction_department" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/oil_department" />
-    </com.google.android.material.tabs.TabLayout>
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPagerGroups"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:text="@string/choose_group"
+        android:textColor="#5F5F5F"
+        android:textSize="20sp" />
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="3dp"
+        android:background="#9B51E0"
+        android:layout_marginRight="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginBottom="-10dp"/>
+    <ListView
+        android:id="@+id/listViewGroups"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_element"
+        android:scrollbars="none"
+        android:backgroundTint="#EDF5F5"/>
 </LinearLayout>
