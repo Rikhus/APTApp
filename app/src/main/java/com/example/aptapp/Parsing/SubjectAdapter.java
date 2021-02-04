@@ -66,6 +66,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
                             + subject.secondSubgroupSubjectAuditorium);
                 }
             }
+            else if (subject.subjectType == Subject.SubjectType.EMPTY){
+                    subjectNameView.setText("На этот день расписание отсутсвует");
+                    return;
+            }
             else{
                 subjectNameView.setText(subject.subjectName);
                 // если поле аудитории не пустое добавляем приписку "ауд."
@@ -73,13 +77,6 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
                     subjectAuditoriumView.setText(view.getContext().getString(R.string.auditorium) + " "
                             + subject.subjectAuditorium);
                 }
-            }
-
-            if (subject.subjectTimeStart.equals("")){
-                subjectDash.setText("");
-            }
-            else{
-                subjectDash.setText("-");
             }
 
             subjectTimeViewStart.setText(subject.subjectTimeStart);
@@ -99,6 +96,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
                 return 2;
             case FOR_ALL_SUBGROUPS_SEPARATELY:
                 return 3;
+            case EMPTY:
+                return 4;
             default:
                 return -1;
         }
@@ -121,6 +120,9 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
                 break;
             case 3:
                 item_view = R.layout.subject_view_for_two_subgroups;
+                break;
+            case 4:
+                item_view = R.layout.subject_empty_view;
                 break;
         }
         View view = LayoutInflater.from(parent.getContext()).inflate(item_view, parent, false);

@@ -10,7 +10,8 @@ public class Subject {
         FOR_ALL_SUBGROUPS,
         FOR_FIRST_SUBGROUP_ONLY,
         FOR_SECOND_SUBGROUP_ONLY,
-        FOR_ALL_SUBGROUPS_SEPARATELY
+        FOR_ALL_SUBGROUPS_SEPARATELY,
+        EMPTY
     }
     public SubjectType subjectType;
 
