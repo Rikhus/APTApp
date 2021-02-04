@@ -53,6 +53,27 @@ public class ScheduleActivity extends AppCompatActivity {
         groupId = groupsIntent.getStringExtra("group_id");
         groupName = groupsIntent.getStringExtra("group_name");
 
+        // сохраняем выбранную группу
+        FileOutputStream fos = null;
+        try{
+            // открываем файл и записываем данные
+            fos = openFileOutput(Constants.FILENAME, MODE_PRIVATE);
+            String data = "group_id: " + groupId +":" +
+                    "group_name: " + groupName;
+            fos.write(data.getBytes());
+        }
+        catch (IOException ex){
+            System.out.println("error while writing to file");
+        }
+        finally {
+            try{
+                if (fos != null) fos.close();
+            }
+            catch (IOException ex){
+                System.out.println("error while closing file stream");
+            }
+        }
+
         TextView scheduleForText = findViewById(R.id.scheduleForText);
         String scheduleForString = getResources().getString(R.string.schedule_for) + " " + groupName
                 + "(" +groupId + ")";
@@ -117,33 +138,6 @@ public class ScheduleActivity extends AppCompatActivity {
         }
     }
 
-    // при выходе из приложения сохраняем данные о текущем расписании (дату, группу)
-
-    @Override
-    protected void onStop() {
-        FileOutputStream fos = null;
-
-        try{
-            // открываем файл и записываем данные
-            fos = openFileOutput(Constants.FILENAME, MODE_PRIVATE);
-            String data = "group_id: " + groupId +":" +
-                    "group_name: " + groupName;
-            fos.write(data.getBytes());
-        }
-        catch (IOException ex){
-            System.out.println("error while writing to file");
-        }
-        finally {
-            try{
-                if (fos != null) fos.close();
-            }
-            catch (IOException ex){
-                System.out.println("error while closing file stream");
-            }
-        }
-
-        super.onStop();
-    }
 
     // выбор даты
     public void selectDate(View view) {

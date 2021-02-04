@@ -13,11 +13,22 @@
         android:roundIcon="@mipmap/ic_launcher_apt_round"
         android:supportsRtl="true"
         android:theme="@style/CustomTheme">
+        <receiver android:name=".AptWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/apt_widget_info" />
+        </receiver>
+
         <activity android:name=".ScheduleActivity" />
         <activity android:name=".GroupSelectActivity" />
         <activity android:name=".CourseSelectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

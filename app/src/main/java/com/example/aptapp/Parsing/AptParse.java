@@ -119,7 +119,7 @@ public class AptParse {
 
         // если расписания на этот день нет
         if (schedule.size() == 0){
-            Subject subjectNull = new Subject("На этот день нет расписания", "", "", "", Subject.SubjectType.FOR_ALL_SUBGROUPS);
+            Subject subjectNull = new Subject("", "", "", "", Subject.SubjectType.EMPTY);
             schedule.add(subjectNull);
         }
         return schedule;
