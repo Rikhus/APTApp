@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:text="@string/time_start"
                 android:textSize="16sp" />
@@ -86,6 +87,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_weight="5"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:text="@string/time_end"
             android:textSize="16sp" />

@@ -75,8 +75,7 @@ public class ScheduleActivity extends AppCompatActivity {
         }
 
         TextView scheduleForText = findViewById(R.id.scheduleForText);
-        String scheduleForString = getResources().getString(R.string.schedule_for) + " " + groupName
-                + "(" +groupId + ")";
+        String scheduleForString = getResources().getString(R.string.schedule_for) + " " + groupName;
         scheduleForText.setText(scheduleForString);
 
         // инициализация графических элементов
