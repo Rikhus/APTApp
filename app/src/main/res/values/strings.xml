@@ -21,9 +21,13 @@
     <string name="select_date">Выбор даты</string>
     <string name="auditorium">ауд.</string>
 
+    <string name="widget_name">Расписание</string>
+
     <string name="construction_department">Строительное отделение</string>
     <string name="oil_department">Нефтяное отделение</string>
     <string name="choose_group">Выберите группу</string>
     <string name="time_end">09:25</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>

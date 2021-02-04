@@ -83,7 +83,7 @@ public class GroupSelectActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, mGroups);
+            adapter = new ArrayAdapter(getApplicationContext(), R.layout.select_group_item_view, mGroups);
             groupsListView.setAdapter(adapter);
         }
     }
