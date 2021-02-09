@@ -19,27 +19,28 @@ public class CourseSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_select);
 
-        // если до этого открывалось расписание перекидываем на ту же группу
-        FileInputStream fin = null;
-        try{
-            fin = openFileInput(Constants.FILENAME);
-            byte[] bytes = new byte[fin.available()];
-            fin.read(bytes);
-            String text = new String(bytes);
+        // если до этого открывалось расписание это не перезагрузка активити при перевороте телефона перекидываем на ту же группу
+        if (savedInstanceState == null) {
+            FileInputStream fin = null;
+            try {
 
-            String groupId = text.split(":")[1];
-            String groupName = text.split(":")[3];
-            groupId = groupId.replace(" ", "");
-            groupName = groupName.replace(" ", "");
+                fin = openFileInput(Constants.FILENAME);
+                byte[] bytes = new byte[fin.available()];
+                fin.read(bytes);
+                String text = new String(bytes);
 
-            Intent intent = new Intent(this, ScheduleActivity.class);
-            intent.putExtra("group_id", groupId);
-            intent.putExtra("group_name", groupName);
-            startActivity(intent);
-        }
-        catch (IOException ex){
+                String groupId = text.split(":")[1];
+                String groupName = text.split(":")[3];
+                groupId = groupId.replace(" ", "");
+                groupName = groupName.replace(" ", "");
 
-        }
+                Intent intent = new Intent(this, ScheduleActivity.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("group_name", groupName);
+                startActivity(intent);
+            }
+            catch(IOException ex){}
+    }
     }
 
     // нажатие кнопки выбора курса

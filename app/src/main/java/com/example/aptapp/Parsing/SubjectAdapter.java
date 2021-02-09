@@ -56,14 +56,21 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
                 firstSubgroupSubjectAuditoriumView.setText(subject.firstSubgroupSubjectAuditorium);
                 secondSubgroupSubjectAuditoriumView.setText(subject.secondSubgroupSubjectAuditorium);
 
-                // если поле аудитории не пустое добавляем приписку "ауд."
-                if (!subject.firstSubgroupSubjectAuditorium.equals("")){
+                // если пара не онлайн
+                if (!subject.firstSubgroupSubjectAuditorium.equals("on-line")){
                     firstSubgroupSubjectAuditoriumView.setText(view.getContext().getString(R.string.auditorium) + " "
                             + subject.firstSubgroupSubjectAuditorium);
                 }
-                if (!subject.secondSubgroupSubjectAuditorium.equals("")){
+                else{
+                    firstSubgroupSubjectAuditoriumView.setText(subject.firstSubgroupSubjectAuditorium);
+                }
+                // если пара не онлайн
+                if (!subject.secondSubgroupSubjectAuditorium.equals("on-line")){
                     secondSubgroupSubjectAuditoriumView.setText(view.getContext().getString(R.string.auditorium) + " "
                             + subject.secondSubgroupSubjectAuditorium);
+                }
+                else{
+                    secondSubgroupSubjectAuditoriumView.setText(subject.secondSubgroupSubjectAuditorium);
                 }
             }
             else if (subject.subjectType == Subject.SubjectType.EMPTY){
@@ -72,10 +79,13 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
             }
             else{
                 subjectNameView.setText(subject.subjectName);
-                // если поле аудитории не пустое добавляем приписку "ауд."
-                if (!subject.subjectAuditorium.equals("")){
+                // если пара не онлайн
+                if (!subject.subjectAuditorium.equals("on-line")){
                     subjectAuditoriumView.setText(view.getContext().getString(R.string.auditorium) + " "
                             + subject.subjectAuditorium);
+                }
+                else{
+                    subjectAuditoriumView.setText(subject.subjectAuditorium);
                 }
             }
 
