@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,11 +34,31 @@ public class ScheduleActivity extends AppCompatActivity {
     RecyclerView scheduleRecyclerView;
     Calendar dateAndTime = Calendar.getInstance();
     TextView textViewDate;
+    TextView scheduleForText;
+    LinearLayout dateSelectMenu;
+
     ScheduleGetter scheduleGetter;
     String groupId;
     String groupName;
     SimpleDateFormat sdf;
     SubjectAdapter adapter;
+
+    LinearLayout.LayoutParams dateMenuParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            0,
+            2.0f
+    );
+
+    LinearLayout.LayoutParams scheduleForTextParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            0,
+            1.0f
+    );
+    LinearLayout.LayoutParams scheduleRecyclerViewParams = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            0,
+            12.0f
+    );
 
     private final String DATE_VARIABLE = "DATE_VARIABLE";
     private final String DATA_ADAPTER = "DATA_ADAPTER";
@@ -74,7 +96,7 @@ public class ScheduleActivity extends AppCompatActivity {
             }
         }
 
-        TextView scheduleForText = findViewById(R.id.scheduleForText);
+        scheduleForText = findViewById(R.id.scheduleForText);
         String scheduleForString = getResources().getString(R.string.schedule_for) + " " + groupName;
         scheduleForText.setText(scheduleForString);
 
@@ -82,6 +104,7 @@ public class ScheduleActivity extends AppCompatActivity {
         textViewDate = findViewById(R.id.textViewDate);
         scheduleRecyclerView = findViewById(R.id.scheduleRecyclerView);
         scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dateSelectMenu = findViewById(R.id.dateSelectMenu);
 
         // если это активити запущено с нуля
         if (savedInstanceState == null){
@@ -116,6 +139,31 @@ public class ScheduleActivity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+
+        // меняем размер меню выбора даты и названия группы для лучшего отображения
+        int orientation = getResources().getConfiguration().orientation;
+        if(orientation == Configuration.ORIENTATION_PORTRAIT){
+            dateMenuParams.weight = 2.0f;
+            scheduleForTextParams.bottomMargin = 10;
+            scheduleForTextParams.topMargin = 10;
+            scheduleRecyclerViewParams.topMargin = 10;
+            scheduleRecyclerViewParams.bottomMargin = 20;
+
+            dateSelectMenu.setLayoutParams(dateMenuParams);
+            scheduleForText.setLayoutParams(scheduleForTextParams);
+            scheduleRecyclerView.setLayoutParams(scheduleRecyclerViewParams);
+        }
+        else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
+            dateMenuParams.weight = 3.0f;
+            scheduleForTextParams.bottomMargin = 5;
+            scheduleForTextParams.topMargin = 5;
+            scheduleRecyclerViewParams.topMargin = 0;
+            scheduleRecyclerViewParams.bottomMargin = 0;
+
+            dateSelectMenu.setLayoutParams(dateMenuParams);
+            scheduleForText.setLayoutParams(scheduleForTextParams);
+            scheduleRecyclerView.setLayoutParams(scheduleRecyclerViewParams);
+        }
 
         try {
             dateAndTime.setTime(sdf.parse(savedInstanceState.getString(DATE_VARIABLE)));
