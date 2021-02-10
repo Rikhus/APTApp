@@ -105,6 +105,8 @@ public class ScheduleActivity extends AppCompatActivity {
         scheduleRecyclerView = findViewById(R.id.scheduleRecyclerView);
         scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         dateSelectMenu = findViewById(R.id.dateSelectMenu);
+        scheduleRecyclerViewParams.leftMargin = 20;
+        scheduleRecyclerViewParams.rightMargin = 20;
 
         // если это активити запущено с нуля
         if (savedInstanceState == null){
@@ -140,12 +142,14 @@ public class ScheduleActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        // меняем размер меню выбора даты и названия группы для лучшего отображения
+        // немного изменяем разметку для лучшего отображения
         int orientation = getResources().getConfiguration().orientation;
         if(orientation == Configuration.ORIENTATION_PORTRAIT){
             dateMenuParams.weight = 2.0f;
+
             scheduleForTextParams.bottomMargin = 10;
             scheduleForTextParams.topMargin = 10;
+
             scheduleRecyclerViewParams.topMargin = 10;
             scheduleRecyclerViewParams.bottomMargin = 20;
 
