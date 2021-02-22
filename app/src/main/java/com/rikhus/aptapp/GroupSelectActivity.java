@@ -1,4 +1,4 @@
-package com.example.aptapp;
+package com.rikhus.aptapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,17 +11,18 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.aptapp.Parsing.AptParse;
-import com.example.aptapp.R;
+import com.rikhus.aptapp.Parsing.AptParse;
+import com.rikhus.aptapp.Parsing.Group;
+import com.rikhus.aptapp.R;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GroupSelectActivity extends AppCompatActivity {
-    private ArrayList<String> mGroups;
-    private ArrayList<String> mGroupsIds;
+    private ArrayList<Group> groups = new ArrayList<>();
     private ArrayAdapter adapter;
     private ListView groupsListView;
 
@@ -29,8 +30,7 @@ public class GroupSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_select);
-        mGroups = new ArrayList<String>();
-        mGroupsIds = new ArrayList<String>();
+
 
         groupsListView = findViewById(R.id.listViewGroups);
         groupsListView.setDividerHeight(0);
@@ -38,8 +38,9 @@ public class GroupSelectActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
-                intent.putExtra("group_name", mGroups.get(position));
-                intent.putExtra("group_id", mGroupsIds.get(position));
+                intent.putExtra("user_type", UserType.STUDENT);
+                intent.putExtra("group_name", groups.get(position).getGroupName());
+                intent.putExtra("group_id", groups.get(position).getGroupId());
 
                 startActivity(intent);
             }
@@ -60,20 +61,9 @@ public class GroupSelectActivity extends AppCompatActivity {
             int courseNumber = integers[0];
             try {
                 // получаем список групп
-                JsonObject array = AptParse.getGroups().getAsJsonObject("groups");
-                // конкретно тут получаем список групп для определенного отделения и курса
-                String idStr = "";
-                for (JsonElement id : array
-                        .getAsJsonArray("dep_0_course_" + courseNumber)) {
-                    // тут получаем имена этих групп и запихиваем в массив
-                    idStr = id.getAsString().replace("\"", " ");
+                groups = AptParse.getGroups(courseNumber);
 
-                    mGroups.add(array.getAsJsonObject(idStr)
-                            .get("Name").getAsString());
-
-                    mGroupsIds.add(idStr);
-                }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 Toast.makeText(getApplicationContext(),
                         getResources().getString(R.string.connection_error),
                         Toast.LENGTH_LONG).show();
@@ -83,7 +73,11 @@ public class GroupSelectActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            adapter = new ArrayAdapter(getApplicationContext(), R.layout.select_group_item_view, mGroups);
+            ArrayList<String> groupsNames = new ArrayList<>();
+            for (Group group : groups){
+                groupsNames.add(group.getGroupName());
+            }
+            adapter = new ArrayAdapter(getApplicationContext(), R.layout.select_group_item_view, groupsNames);
             groupsListView.setAdapter(adapter);
         }
     }

@@ -1,4 +1,4 @@
-package com.example.aptapp;
+package com.rikhus.aptapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.DatePicker;
@@ -18,9 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.aptapp.Parsing.AptParse;
-import com.example.aptapp.Parsing.Subject;
-import com.example.aptapp.Parsing.SubjectAdapter;
+import com.rikhus.aptapp.Parsing.AptParse;
+import com.rikhus.aptapp.Parsing.Subject;
+import com.rikhus.aptapp.Parsing.SubjectAdapter;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -38,8 +37,13 @@ public class ScheduleActivity extends AppCompatActivity {
     LinearLayout dateSelectMenu;
 
     ScheduleGetter scheduleGetter;
+
+    UserType userType;
     String groupId;
     String groupName;
+    String teacherId;
+    String teacherName;
+
     SimpleDateFormat sdf;
     SubjectAdapter adapter;
 
@@ -48,7 +52,6 @@ public class ScheduleActivity extends AppCompatActivity {
             0,
             2.0f
     );
-
     LinearLayout.LayoutParams scheduleForTextParams = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             0,
@@ -61,7 +64,6 @@ public class ScheduleActivity extends AppCompatActivity {
     );
 
     private final String DATE_VARIABLE = "DATE_VARIABLE";
-    private final String DATA_ADAPTER = "DATA_ADAPTER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,16 +74,31 @@ public class ScheduleActivity extends AppCompatActivity {
 
         // получение выбранной группы
         Intent groupsIntent = getIntent();
-        groupId = groupsIntent.getStringExtra("group_id");
-        groupName = groupsIntent.getStringExtra("group_name");
+
+        userType = (UserType) groupsIntent.getSerializableExtra("user_type");
+
+        if (userType == UserType.STUDENT){
+            groupId = groupsIntent.getStringExtra("group_id");
+            groupName = groupsIntent.getStringExtra("group_name");
+        }
+        else{
+            teacherId = groupsIntent.getStringExtra("teacher_id");
+            teacherName = groupsIntent.getStringExtra("teacher_name");
+        }
 
         // сохраняем выбранную группу
         FileOutputStream fos = null;
         try{
             // открываем файл и записываем данные
             fos = openFileOutput(Constants.FILENAME, MODE_PRIVATE);
-            String data = "group_id: " + groupId +":" +
-                    "group_name: " + groupName;
+            String data = "";
+            if (userType == UserType.STUDENT){
+                data = "STUDENT:" + groupId + ":" + groupName;
+            }
+            else{
+                data = "TEACHER:" + teacherId + ":" + teacherName;
+            }
+
             fos.write(data.getBytes());
         }
         catch (IOException ex){
@@ -97,7 +114,13 @@ public class ScheduleActivity extends AppCompatActivity {
         }
 
         scheduleForText = findViewById(R.id.scheduleForText);
-        String scheduleForString = getResources().getString(R.string.schedule_for) + " " + groupName;
+        String scheduleForString = "";
+        if (userType == UserType.STUDENT){
+            scheduleForString = getResources().getString(R.string.schedule_for) + " " + groupName;
+        }
+        else{
+            scheduleForString = teacherName;
+        }
         scheduleForText.setText(scheduleForString);
 
         // инициализация графических элементов
@@ -119,9 +142,13 @@ public class ScheduleActivity extends AppCompatActivity {
 
             // запуск асинхронной загрузки данных
             scheduleGetter = new ScheduleGetter();
-            scheduleGetter.execute(
-                    groupsIntent.getStringExtra("group_id"),
-                    sdf.format(new Date()));
+            if (userType == UserType.STUDENT){
+                scheduleGetter.execute(groupId, sdf.format(new Date()));
+            }
+            else{
+                scheduleGetter.execute(teacherId, sdf.format(new Date()));
+            }
+
         }
     }
 
@@ -179,7 +206,12 @@ public class ScheduleActivity extends AppCompatActivity {
             adapter = Constants.adapter;
             if (adapter == null) {
                 scheduleGetter = new ScheduleGetter();
-                scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
+                if(userType == UserType.STUDENT){
+                    scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
+                }
+                else{
+                    scheduleGetter.execute(teacherId, sdf.format(dateAndTime.getTime()));
+                }
             }
             else{
                 scheduleRecyclerView.setAdapter(adapter);
@@ -212,7 +244,12 @@ public class ScheduleActivity extends AppCompatActivity {
                 scheduleGetter.cancel(true);
             }
             scheduleGetter = new ScheduleGetter();
-            scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
+            if (userType == UserType.STUDENT){
+                scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
+            }
+            else{
+                scheduleGetter.execute(teacherId, sdf.format(dateAndTime.getTime()));
+            }
         }
     };
 
@@ -228,7 +265,12 @@ public class ScheduleActivity extends AppCompatActivity {
         @Override
         protected ArrayList<Subject> doInBackground(String... strings) {
             try {
-                return AptParse.getSchedule(strings[0], strings[1]);
+                if (userType == UserType.STUDENT){
+                    return AptParse.getSchedule(strings[0], strings[1]);
+                }
+                else{
+                    return AptParse.getScheduleForTeacher(strings[0], strings[1]);
+                }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 return null;

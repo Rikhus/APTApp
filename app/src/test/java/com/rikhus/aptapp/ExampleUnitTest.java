@@ -1,4 +1,4 @@
-package com.example.aptapp;
+package com.rikhus.aptapp;
 
 import org.junit.Test;
 

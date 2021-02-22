@@ -1,45 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CourseSelectActivity"
     android:orientation="vertical"
-    android:layout_margin="10dp"
-    >
-
-
+    tools:context=".SelectCourseFragment">
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2" />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="8">
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="vertical">
         <TextView
-            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:gravity="center"
-            android:text="Выберите номер курса"
+            android:text="@string/choose_course_number"
             android:textColor="#5F5F5F"
             android:textSize="20sp" />
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            android:layout_marginBottom="-10dp"
-            android:background="#9B51E0" />
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="6">
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,60 +37,50 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
-
             <Button
                 android:id="@+id/firstCourseButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="#EDF5F5"
                 android:background="@drawable/rouned_button"
-                android:onClick="selectCourseClick"
+                android:backgroundTint="#EDF5F5"
                 android:text="@string/first_course" />
-
             <Button
                 android:id="@+id/secondCourseButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:backgroundTint="#EDF5F5"
-                android:background="@drawable/rouned_button"
                 android:layout_weight="1"
-                android:onClick="selectCourseClick"
+                android:background="@drawable/rouned_button"
+                android:backgroundTint="#EDF5F5"
                 android:text="@string/second_course" />
-
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
             android:orientation="horizontal">
-
             <Button
                 android:id="@+id/thirdCourseButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="#EDF5F5"
                 android:background="@drawable/rouned_button"
-                android:onClick="selectCourseClick"
+                android:backgroundTint="#EDF5F5"
                 android:text="@string/third_course" />
-
             <Button
                 android:id="@+id/fourthCourseButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="#EDF5F5"
                 android:background="@drawable/rouned_button"
-                android:onClick="selectCourseClick"
+                android:backgroundTint="#EDF5F5"
                 android:text="@string/fourth_course" />
         </LinearLayout>
-        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -1,7 +1,5 @@
-package com.example.aptapp.Parsing;
+package com.rikhus.aptapp.Parsing;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.aptapp.R;
+import com.rikhus.aptapp.R;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextViewHolder>{
@@ -27,9 +24,14 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
         TextView firstSubgroupSubjectAuditoriumView;
         TextView secondSubgroupSubjectAuditoriumView;
 
+        TextView subjectTeacherView;
+        TextView firstSubgroupTeacherView;
+        TextView secondSubgroupTeacherView;
+
         TextView subjectTimeViewStart;
         TextView subjectTimeViewEnd;
         TextView subjectDash;
+
         View view;
 
         public TextViewHolder(View itemView){
@@ -42,6 +44,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
             firstSubgroupSubjectAuditoriumView = itemView.findViewById(R.id.firstSubgroupSubjectAuditoriumView);
             secondSubgroupSubjectAuditoriumView = itemView.findViewById(R.id.secondSubgroupSubjectAuditoriumView);
 
+            subjectTeacherView = itemView.findViewById(R.id.teacherNameView);
+            firstSubgroupTeacherView = itemView.findViewById(R.id.firstSubgroupTeacherNameView);
+            secondSubgroupTeacherView = itemView.findViewById(R.id.secondSubgroupTeacherNameView);
+
             subjectTimeViewStart = itemView.findViewById(R.id.subjectTimeStart);
             subjectTimeViewEnd = itemView.findViewById(R.id.subjectTimeEnd);
             subjectDash = itemView.findViewById(R.id.subjectDash);
@@ -49,55 +55,62 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
         }
 
         public void bind(Subject subject){
-            if (subject.subjectType == Subject.SubjectType.FOR_ALL_SUBGROUPS_SEPARATELY){
-                firstSubgroupSubjectNameView.setText(subject.firstSubgroupSubjectName);
-                secondSubgroupSubjectNameView.setText(subject.secondSubgroupSubjectName);
+            // для обоих групп отдельно
+            if (subject.getSubjectType() == Subject.SubjectType.FOR_ALL_SUBGROUPS_SEPARATELY){
+                firstSubgroupSubjectNameView.setText(subject.getFirstSubgroupSubjectName());
+                secondSubgroupSubjectNameView.setText(subject.getSecondSubgroupSubjectName());
 
-                firstSubgroupSubjectAuditoriumView.setText(subject.firstSubgroupSubjectAuditorium);
-                secondSubgroupSubjectAuditoriumView.setText(subject.secondSubgroupSubjectAuditorium);
+                firstSubgroupSubjectAuditoriumView.setText(subject.getFirstSubgroupSubjectAuditorium());
+                secondSubgroupSubjectAuditoriumView.setText(subject.getSecondSubgroupSubjectAuditorium());
+
+                firstSubgroupTeacherView.setText(subject.getFirstSubgroupSubjectTeacher());
+                secondSubgroupTeacherView.setText(subject.getSecondSubgroupSubjectTeacher());
 
                 // если пара не онлайн
-                if (!subject.firstSubgroupSubjectAuditorium.equals("on-line")){
+                if (!subject.getFirstSubgroupSubjectAuditorium().equals("on-line")){
                     firstSubgroupSubjectAuditoriumView.setText(view.getContext().getString(R.string.auditorium) + " "
-                            + subject.firstSubgroupSubjectAuditorium);
+                            + subject.getFirstSubgroupSubjectAuditorium());
                 }
                 else{
-                    firstSubgroupSubjectAuditoriumView.setText(subject.firstSubgroupSubjectAuditorium);
+                    firstSubgroupSubjectAuditoriumView.setText(subject.getFirstSubgroupSubjectAuditorium());
                 }
                 // если пара не онлайн
-                if (!subject.secondSubgroupSubjectAuditorium.equals("on-line")){
+                if (!subject.getSecondSubgroupSubjectAuditorium().equals("on-line")){
                     secondSubgroupSubjectAuditoriumView.setText(view.getContext().getString(R.string.auditorium) + " "
-                            + subject.secondSubgroupSubjectAuditorium);
+                            + subject.getSecondSubgroupSubjectAuditorium());
                 }
                 else{
-                    secondSubgroupSubjectAuditoriumView.setText(subject.secondSubgroupSubjectAuditorium);
+                    secondSubgroupSubjectAuditoriumView.setText(subject.getSecondSubgroupSubjectAuditorium());
                 }
             }
-            else if (subject.subjectType == Subject.SubjectType.EMPTY){
+            // пустая
+            else if (subject.getSubjectType() == Subject.SubjectType.EMPTY){
                     subjectNameView.setText("На этот день расписание отсутсвует");
                     return;
             }
+            // для обоих подгрупп одна пара или же пара только у одной из подгрупп
             else{
-                subjectNameView.setText(subject.subjectName);
+                subjectNameView.setText(subject.getSubjectName());
+                subjectTeacherView.setText(subject.getSubjectTeacher());
                 // если пара не онлайн
-                if (!subject.subjectAuditorium.equals("on-line")){
+                if (!subject.getSubjectAuditorium().equals("on-line")){
                     subjectAuditoriumView.setText(view.getContext().getString(R.string.auditorium) + " "
-                            + subject.subjectAuditorium);
+                            + subject.getSubjectAuditorium());
                 }
                 else{
-                    subjectAuditoriumView.setText(subject.subjectAuditorium);
+                    subjectAuditoriumView.setText(subject.getSubjectAuditorium());
                 }
             }
 
-            subjectTimeViewStart.setText(subject.subjectTimeStart);
-            subjectTimeViewEnd.setText(subject.subjectTimeEnd);
+            subjectTimeViewStart.setText(subject.getSubjectTimeStart());
+            subjectTimeViewEnd.setText(subject.getSubjectTimeEnd());
         }
     }
 
     @Override
     public int getItemViewType(int position)
     {
-        switch (subjects.get(position).subjectType){
+        switch (subjects.get(position).getSubjectType()){
             case FOR_ALL_SUBGROUPS:
                 return 0;
             case FOR_FIRST_SUBGROUP_ONLY:
