@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".SelectUserTypeActivity"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/userTypeTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        app:tabIndicatorColor="#9B51E0"
+        app:tabIndicatorHeight="3dp"
+        app:tabTextAppearance="@style/TabText"
+        android:theme="@style/TabLayout_Theme"
+        app:tabTextColor="#5F5F5F">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/studentsTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/students" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/teachersTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/teachers" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/fragmentChoose"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="12"/>
+</LinearLayout>

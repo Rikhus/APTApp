@@ -1,6 +1,6 @@
-package com.example.aptapp;
+package com.rikhus.aptapp;
 
-import com.example.aptapp.Parsing.SubjectAdapter;
+import com.rikhus.aptapp.Parsing.SubjectAdapter;
 
 public class Constants {
     public static final String FILENAME = "data";

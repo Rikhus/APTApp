@@ -31,4 +31,19 @@
         <item name="fontFamily">@font/exo_2</item>
     </style>
 
+    <style name="TabText" parent="Base.Widget.Design.TabLayout">
+        <item name="android:fontFamily">@font/exo_2</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TabLayout_Theme" parent="@style/AppTheme">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="MyTextInputLabel" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlNormal">#9B51E0</item>
+        <item name="colorControlActivated">#9B51E0</item>
+        <item name="colorAccent">#9B51E0</item>
+    </style>
+
 </resources>
