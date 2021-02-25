@@ -43,6 +43,7 @@ public class GroupSelectActivity extends AppCompatActivity {
                 intent.putExtra("group_id", groups.get(position).getGroupId());
 
                 startActivity(intent);
+                GroupSelectActivity.this.finish();
             }
         });
 
