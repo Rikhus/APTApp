@@ -43,6 +43,7 @@ public class GroupSelectActivity extends AppCompatActivity {
                 intent.putExtra("group_id", groups.get(position).getGroupId());
 
                 startActivity(intent);
+                GroupSelectActivity.this.finish();
             }
         });
 
@@ -63,10 +64,15 @@ public class GroupSelectActivity extends AppCompatActivity {
                 // получаем список групп
                 groups = AptParse.getGroups(courseNumber);
 
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(),
-                        getResources().getString(R.string.connection_error),
-                        Toast.LENGTH_LONG).show();
+            } catch (Exception ex) {
+                GroupSelectActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),
+                                getResources().getString(R.string.connection_error),
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             }
             return null;
         }

@@ -1,8 +1,11 @@
 package com.rikhus.aptapp.Parsing;
 
+import android.text.format.Time;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.rikhus.aptapp.UserType;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,7 +14,10 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AptParse {
 
@@ -140,10 +146,10 @@ public class AptParse {
                         // если для первой вытаскиваем расписание для нее
                         if(subjectHTML.select(".subGroup1").size() != 0){
                             Element subjectHTML1 = subjectHTML.selectFirst(".subGroup1");
-                            subject.setSubjectName("(1 п/гр) " + subjectHTML1.selectFirst(".h5 .d-md-none.text-center").text());
-                            subject.setSubjectAuditorium(subjectHTML1.selectFirst(".text-truncate .h5 a").text());
+                            subject.setSubjectName("(1 п/гр) " + subjectHTML1.selectFirst(SUBJECT_NAME_HTML_CLASS).text());
+                            subject.setSubjectAuditorium(subjectHTML1.selectFirst(SUBJECT_AUDITORIUM_HTML_CLASS).text());
                             subject.setSubjectType(Subject.SubjectType.FOR_FIRST_SUBGROUP_ONLY);
-                            subject.setSubjectTeacher(subjectHTML1.selectFirst(".d-none.d-md-block .h5").text());
+                            subject.setSubjectTeacher(subjectHTML1.selectFirst(SUBJECT_TEACHER_HTML_CLASS).text());
                         }
                         // если для второй, то для нее
                         if(subjectHTML.select(".subGroup2").size() != 0){
@@ -176,6 +182,7 @@ public class AptParse {
                                 subjectTime.substring(7,9) + ":" +
                                         subjectTime.substring(9));
                         subject.setSubjectType(Subject.SubjectType.FOR_ALL_SUBGROUPS);
+                        // добавляем преподавателя
                         subject.setSubjectTeacher(subjectHTML.selectFirst(SUBJECT_TEACHER_HTML_CLASS).text());
                     }
                     // довабляем элемент в список
@@ -269,5 +276,55 @@ public class AptParse {
             schedule.add(subjectNull);
         }
         return schedule;
+    }
+
+    // получение расписания для студентов
+    public static Date getPairsEndTime(String id, String date, UserType userType) throws IOException, ParseException {
+        // получение документа
+        ArrayList<Subject> schedule = new ArrayList<>();
+        String userTypeUrl = "";
+        if (userType == UserType.STUDENT){
+            userTypeUrl = "group";
+        }
+        else{
+            userTypeUrl = "staff";
+        }
+        Document document = Jsoup.connect("http://almetpt.ru/2020/site/schedule/" + userTypeUrl + "/" +
+                id + "/" + date).get();
+        Elements subjectsHTML = document.select(".card.myCard");
+        Elements subjectsWithoutConsultationsHTML = new Elements();
+
+        // отсекаем консультации и прочее
+        for (Element subjectHTML : subjectsHTML){
+            if(subjectHTML.select(".card-header").size() != 0 && subjectHTML.select(".card-header.text-center").size() == 0){
+                subjectsWithoutConsultationsHTML.add(subjectHTML);
+            }
+        }
+        Element lastSubjectHTML = subjectsWithoutConsultationsHTML.last();
+        String endTimeString;
+
+        // если пар нет, то выдаем полночь, чтоб сразу перескакивало на след день
+        if(lastSubjectHTML == null){
+            endTimeString = "00:00";
+        }
+        else {
+            String timeString = lastSubjectHTML.selectFirst(SUBJECT_TIME_HTML_CLASS).text();
+            endTimeString = timeString.substring(0, 2) + ":" +
+                    timeString.substring(2, 5);
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+        Date pairsEndTime;
+        try{
+            pairsEndTime = sdf.parse(endTimeString);
+        }
+        catch(Exception ex){
+            pairsEndTime = new Date();
+        }
+
+        Date currentDate = new Date();
+        pairsEndTime.setDate(currentDate.getDate());
+        pairsEndTime.setMonth(currentDate.getMonth());
+        pairsEndTime.setYear(currentDate.getYear());
+        return pairsEndTime;
     }
 }

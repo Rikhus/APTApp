@@ -47,6 +47,7 @@ public class ScheduleActivity extends AppCompatActivity {
     SimpleDateFormat sdf;
     SubjectAdapter adapter;
 
+    // переменные разметки для изменения активити при перевороте экрана
     LinearLayout.LayoutParams dateMenuParams = new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             0,
@@ -136,17 +137,13 @@ public class ScheduleActivity extends AppCompatActivity {
             adapter = new SubjectAdapter();
             scheduleRecyclerView.setAdapter(adapter);
 
-            // по умолчанию расписание на сегодня
-            dateAndTime.setTime(new Date());
-            textViewDate.setText(formatDate(dateAndTime));
-
-            // запуск асинхронной загрузки данных
-            scheduleGetter = new ScheduleGetter();
+            // запуск автоматического подбора даты и расписания
+            ScheduleParsingStarter scheduleParsingStarter = new ScheduleParsingStarter();
             if (userType == UserType.STUDENT){
-                scheduleGetter.execute(groupId, sdf.format(new Date()));
+                scheduleParsingStarter.execute(groupId);
             }
-            else{
-                scheduleGetter.execute(teacherId, sdf.format(new Date()));
+            if (userType == UserType.TEACHER){
+                scheduleParsingStarter.execute(teacherId);
             }
 
         }
@@ -288,6 +285,51 @@ public class ScheduleActivity extends AppCompatActivity {
 
             adapter.clearItems();
             adapter.setItems(schedule);
+        }
+    }
+
+    // получения времени окончания последней пары
+    class ScheduleParsingStarter extends AsyncTask<String, Void, String[]>{
+        @Override
+        protected String[] doInBackground(String... strings) {
+            try {
+
+                Calendar currentDate = Calendar.getInstance();
+
+                Date pairsEndDate = AptParse.getPairsEndTime(strings[0], sdf.format(currentDate.getTime()), userType);
+                Date currentTime = Calendar.getInstance().getTime();
+
+                // если последняя пара кончилась открываем расписание на завтра
+                if (currentTime.getTime() > pairsEndDate.getTime()){
+                    currentDate.add(Calendar.DATE, 1);
+                }
+                String currentDateString = sdf.format(currentDate.getTime());
+
+                ScheduleGetter scheduleGetter = new ScheduleGetter();
+
+
+
+                return new String[] {strings[0], currentDateString};
+
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return new String[] {strings[0], sdf.format(new Date())};
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String[] strings) {
+
+            // запуск асинхронной загрузки данных
+            scheduleGetter = new ScheduleGetter();
+            scheduleGetter.execute(strings[0], strings[1]);
+
+            try {
+                dateAndTime.setTime(sdf.parse(strings[1]));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            textViewDate.setText(formatDate(dateAndTime));
         }
     }
 }
