@@ -35,6 +35,9 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                 byte[] bytes = new byte[fin.available()];
                 fin.read(bytes);
                 String text = new String(bytes);
+                if (text.equals("")){
+                    throw new Exception();
+                }
                 String userType = text.split(":")[0];
 
                 String groupId = "";
@@ -59,6 +62,9 @@ public class SelectUserTypeActivity extends AppCompatActivity {
                     intent.putExtra("user_type", UserType.TEACHER);
                     intent.putExtra("teacher_id", teacherid);
                     intent.putExtra("teacher_name", teacherName);
+                }
+                else{
+                    throw new Exception();
                 }
 
                 startActivity(intent);

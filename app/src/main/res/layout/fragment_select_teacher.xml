@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context=".SelectCourseFragment">
     <Space
@@ -18,7 +19,7 @@
         android:layout_marginBottom="5dp"
         android:gravity="center"
         android:text="@string/choose_teacher"
-        android:textColor="#5F5F5F"
+        android:textColor="@color/apt_text"
         android:textSize="20sp" />
     <Space
         android:layout_width="match_parent"
@@ -52,5 +53,5 @@
         android:layout_weight="8"
         android:scrollbars="none"
         android:background="@drawable/rounded_element"
-        android:backgroundTint="#EDF5F5"/>
+        android:backgroundTint="@color/apt_gray"/>
 </LinearLayout>

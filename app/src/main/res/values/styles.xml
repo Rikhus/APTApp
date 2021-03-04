@@ -14,7 +14,8 @@
     </style>
 
     <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">#fafafa</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="background">@color/colorPrimary</item>
         <item name="android:textViewStyle">@style/Exo2TextViewStyle</item>
         <item name="android:buttonStyle">@style/Exo2ButtonStyle</item>
     </style>
@@ -27,7 +28,7 @@
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">#9B51E0</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="fontFamily">@font/exo_2</item>
     </style>
 
@@ -41,9 +42,9 @@
     </style>
 
     <style name="MyTextInputLabel" parent="Widget.Design.TextInputLayout">
-        <item name="colorControlNormal">#9B51E0</item>
-        <item name="colorControlActivated">#9B51E0</item>
-        <item name="colorAccent">#9B51E0</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
 </resources>

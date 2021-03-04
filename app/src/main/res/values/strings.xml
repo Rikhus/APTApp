@@ -37,5 +37,6 @@
     <string name="choose_teacher">Выберите преподавателя</string>
     <string name="enter_name">Введите имя...</string>
     <string name="teacher_name_example">Иванов Иван Иванович</string>
+    <string name="loading">Загрузка...</string>
 
 </resources>

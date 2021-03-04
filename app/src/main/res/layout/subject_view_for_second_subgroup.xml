@@ -7,7 +7,7 @@
     android:gravity="center"
     android:layout_marginBottom="10dp"
     android:background="@drawable/rounded_element"
-    android:backgroundTint="#C0CAFA">
+    android:backgroundTint="@color/apt_blue">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
