@@ -10,4 +10,4 @@
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
     android:fontFamily="@font/exo_2"
-    android:textColor="#5F5F5F"/>
+    android:textColor="@color/apt_text"/>

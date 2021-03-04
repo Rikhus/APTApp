@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -20,6 +22,8 @@ import android.widget.Toast;
 import com.rikhus.aptapp.Parsing.AptParse;
 import com.rikhus.aptapp.Parsing.Subject;
 import com.rikhus.aptapp.Parsing.SubjectAdapter;
+import com.rikhus.aptapp.ScheduleNotification.NewScheduleReleasedReciever;
+import com.rikhus.aptapp.ScheduleNotification.NotificationData;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,29 +51,19 @@ public class ScheduleActivity extends AppCompatActivity {
     SimpleDateFormat sdf;
     SubjectAdapter adapter;
 
-    // переменные разметки для изменения активити при перевороте экрана
-    LinearLayout.LayoutParams dateMenuParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            0,
-            2.0f
-    );
-    LinearLayout.LayoutParams scheduleForTextParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            0,
-            1.0f
-    );
-    LinearLayout.LayoutParams scheduleRecyclerViewParams = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            0,
-            12.0f
-    );
+    LinearLayout.LayoutParams dateMenuParams;
+    LinearLayout.LayoutParams scheduleForTextParams;
+    LinearLayout.LayoutParams scheduleRecyclerViewParams;
 
     private final String DATE_VARIABLE = "DATE_VARIABLE";
+    private final int CHECK_PERIOD_SECONDS = 1800;
+    //private final int CHECK_PERIOD_SECONDS = 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+
         // форматирование дат
         sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -78,6 +72,7 @@ public class ScheduleActivity extends AppCompatActivity {
 
         userType = (UserType) groupsIntent.getSerializableExtra("user_type");
 
+        // в зависимости от типа пользователя получаем его данные
         if (userType == UserType.STUDENT){
             groupId = groupsIntent.getStringExtra("group_id");
             groupName = groupsIntent.getStringExtra("group_name");
@@ -87,32 +82,9 @@ public class ScheduleActivity extends AppCompatActivity {
             teacherName = groupsIntent.getStringExtra("teacher_name");
         }
 
-        // сохраняем выбранную группу
-        FileOutputStream fos = null;
-        try{
-            // открываем файл и записываем данные
-            fos = openFileOutput(Constants.FILENAME, MODE_PRIVATE);
-            String data = "";
-            if (userType == UserType.STUDENT){
-                data = "STUDENT:" + groupId + ":" + groupName;
-            }
-            else{
-                data = "TEACHER:" + teacherId + ":" + teacherName;
-            }
-
-            fos.write(data.getBytes());
-        }
-        catch (IOException ex){
-            System.out.println("error while writing to file");
-        }
-        finally {
-            try{
-                if (fos != null) fos.close();
-            }
-            catch (IOException ex){
-                System.out.println("error while closing file stream");
-            }
-        }
+        // сохраняем тип пользователя и его айди и настраиваем лейауты для перевернутого экрана
+        saveData();
+        setupLayoutsForViews();
 
         scheduleForText = findViewById(R.id.scheduleForText);
         String scheduleForString = "";
@@ -146,6 +118,60 @@ public class ScheduleActivity extends AppCompatActivity {
                 scheduleParsingStarter.execute(teacherId);
             }
 
+        }
+
+        // создание аларма и уведомления о новом расписании
+        Intent intent = new Intent(this, NewScheduleReleasedReciever.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), CHECK_PERIOD_SECONDS * 1000, pendingIntent);
+    }
+
+    public void setupLayoutsForViews(){
+        // переменные разметки для изменения активити при перевороте экрана
+        dateMenuParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                2.0f
+        );
+         scheduleForTextParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                1.0f
+        );
+        scheduleRecyclerViewParams  = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                12.0f
+        );
+    }
+
+    public void saveData(){
+        // сохраняем выбранную группу
+        FileOutputStream fos = null;
+        try{
+            // открываем файл и записываем данные
+            fos = openFileOutput(Constants.FILENAME, MODE_PRIVATE);
+            String data = "";
+            if (userType == UserType.STUDENT){
+                data = "STUDENT:" + groupId + ":" + groupName;
+            }
+            else{
+                data = "TEACHER:" + teacherId + ":" + teacherName;
+            }
+
+            fos.write(data.getBytes());
+        }
+        catch (IOException ex){
+            System.out.println("error while writing to file");
+        }
+        finally {
+            try{
+                if (fos != null) fos.close();
+            }
+            catch (IOException ex){
+                System.out.println("error while closing file stream");
+            }
         }
     }
 
@@ -296,18 +322,16 @@ public class ScheduleActivity extends AppCompatActivity {
 
                 Calendar currentDate = Calendar.getInstance();
 
-                Date pairsEndDate = AptParse.getPairsEndTime(strings[0], sdf.format(currentDate.getTime()), userType);
+                Date pairsEndTime = AptParse.getPairsEndTime(strings[0], sdf.format(currentDate.getTime()), userType);
                 Date currentTime = Calendar.getInstance().getTime();
 
-                // если последняя пара кончилась открываем расписание на завтра
-                if (currentTime.getTime() > pairsEndDate.getTime()){
-                    currentDate.add(Calendar.DATE, 1);
+                // если последняя пара кончилась открываем расписание на следующий день
+                if (currentTime.getTime() > pairsEndTime.getTime()){
+                    // достаем последний день, на который есть расписание
+                    String lastSubjectDay = AptParse.getDates().get(0).getAsJsonObject().get("Date").getAsString();
+                    currentDate.setTime(sdf.parse(lastSubjectDay));
                 }
                 String currentDateString = sdf.format(currentDate.getTime());
-
-                ScheduleGetter scheduleGetter = new ScheduleGetter();
-
-
 
                 return new String[] {strings[0], currentDateString};
 

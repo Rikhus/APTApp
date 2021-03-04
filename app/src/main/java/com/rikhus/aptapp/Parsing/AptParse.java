@@ -3,6 +3,7 @@ package com.rikhus.aptapp.Parsing;
 import android.text.format.Time;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rikhus.aptapp.UserType;
@@ -60,15 +61,15 @@ public class AptParse {
 
     }
 
-    // получение дат
-    public static JsonObject getDates() throws IOException {
+    // получение дат, на которые есть расписание
+    public static JsonArray getDates() throws IOException {
         // получение документа
         Document document = Jsoup.connect("http://almetpt.ru/2020/schedule/dates")
                 .header("X-Requested-With", "XMLHttpRequest")
                 .ignoreContentType(true).get();
 
         // преобразование строкового json в JsonObject
-        return new Gson().fromJson(document.body().text(), JsonObject.class);
+        return new Gson().fromJson(document.body().text(), JsonObject.class).getAsJsonArray("dates");
     }
 
     // получение преподавателей

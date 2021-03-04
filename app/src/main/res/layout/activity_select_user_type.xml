@@ -5,8 +5,9 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SelectUserTypeActivity"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
-    android:layout_margin="10dp">
+    android:padding="10dp">
 
 
     <Space
@@ -19,11 +20,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.7"
-        app:tabIndicatorColor="#9B51E0"
+        app:tabIndicatorColor="@color/colorAccent"
         app:tabIndicatorHeight="3dp"
         app:tabTextAppearance="@style/TabText"
         android:theme="@style/TabLayout_Theme"
-        app:tabTextColor="#5F5F5F">
+        app:tabTextColor="@color/apt_text">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/studentsTab"

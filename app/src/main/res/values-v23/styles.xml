@@ -2,9 +2,9 @@
 <resources>
 
     <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">#fafafa</item>
         <item name="android:textViewStyle">@style/Exo2TextViewStyle</item>
         <item name="android:buttonStyle">@style/Exo2ButtonStyle</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
     </style>
 </resources>

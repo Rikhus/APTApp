@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:layout_weight="1"
         android:background="@drawable/first_subgroup_from_two_rounded"
-        android:backgroundTint="#C0FAD0">
+        android:backgroundTint="@color/apt_green">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -104,7 +104,7 @@
         android:orientation="horizontal"
         android:layout_weight="1"
         android:background="@drawable/second_subgroup_from_two_rounded"
-        android:backgroundTint="#C0CAFA">
+        android:backgroundTint="@color/apt_blue">
 
         <TextView
             android:id="@+id/subjectTimeEnd"

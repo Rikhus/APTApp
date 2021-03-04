@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#363B4E</color>
+    <color name="colorAccent">@color/apt_accent</color>
     <color name="light_blue_50">#FFE1F5FE</color>
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
+
+    <color name="apt_green">#C0FAD0</color>
+    <color name="apt_blue">#C0CAFA</color>
+    <color name="apt_gray">#EDF5F5</color>
+    <color name="apt_text">#5F5F5F</color>
+    <color name="apt_background">#FFFFFF</color>
+    <color name="apt_accent">#927FBF</color>
+
+    <color name="apt_green_dark">#8CBFB0</color>
+    <color name="apt_blue_dark">#767D9B</color>
+    <color name="apt_gray_dark">#4A5068</color>
+    <color name="apt_text_dark">#FFFFFF</color>
+    <color name="apt_background_dark">#363B4E</color>
+    <color name="apt_accent_dark">#9F8CCD</color>
 </resources>
