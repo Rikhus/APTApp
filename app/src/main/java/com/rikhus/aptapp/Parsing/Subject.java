@@ -1,6 +1,7 @@
 package com.rikhus.aptapp.Parsing;
 
 public class Subject {
+    private String subjectNumber = "";
     private String subjectName = "";
     private String subjectAuditorium = "";
     private String subjectTimeStart = "";
@@ -26,6 +27,8 @@ public class Subject {
 
 
     // геттеры и сеттеры для всего
+    public String getSubjectNumber() {return subjectNumber;}
+    public void setSubjectNumber(String subjectNumber) {this.subjectNumber = subjectNumber;}
     public String getSubjectName() {return subjectName;}
     public void setSubjectName(String subjectName) {this.subjectName = subjectName;}
     public String getSubjectAuditorium() {return subjectAuditorium;}
@@ -53,7 +56,8 @@ public class Subject {
     public String getSecondSubgroupSubjectTeacher() {return secondSubgroupSubjectTeacher;}
     public void setSecondSubgroupSubjectTeacher(String secondSubgroupSubjectTeacher) {this.secondSubgroupSubjectTeacher = secondSubgroupSubjectTeacher;}
 
-    public Subject(String subjectName, String subjectAuditorium, String subjectTimeStart, String subjectTimeEnd, SubjectType subjectType, String subjectTeacher) {
+    public Subject(String subjectNumber, String subjectName, String subjectAuditorium, String subjectTimeStart, String subjectTimeEnd, SubjectType subjectType, String subjectTeacher) {
+        this.subjectNumber = subjectNumber;
         this.subjectName = subjectName;
         this.subjectAuditorium = subjectAuditorium;
         this.subjectTimeStart = subjectTimeStart;

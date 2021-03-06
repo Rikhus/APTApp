@@ -1,93 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/subjectLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:layout_height="120dp"
+    android:orientation="vertical"
     android:gravity="center"
     android:layout_marginBottom="10dp"
     android:background="@drawable/rounded_element"
-    android:backgroundTint="@color/apt_green">
+    android:backgroundTint="@color/colorAccent">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="horizontal">
         <TextView
-            android:id="@+id/subjectTimeStart"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
+            android:id="@+id/subjectNumberView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/time_start"
-            android:textSize="16sp" />
+            android:gravity="center|start"
+            android:textSize="20sp"
+            android:textColor="@color/apt_background"
+            android:text="I пара"/>
         <TextView
-            android:id="@+id/subjectDash"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
+            android:id="@+id/subjectTimeView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="-"
-            android:textSize="16sp" />
-        <TextView
-            android:id="@+id/subjectTimeEnd"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="@string/time_end"
-            android:textSize="16sp" />
+            android:textSize="20sp"
+            android:gravity="center|end"
+            android:textColor="@color/apt_background"
+            android:text="08:00 - 09:25"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/subjectInfo"
-        android:layout_weight="1"
+        android:layout_weight="3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
+        android:layout_height="0dp"
+        android:backgroundTint="@color/apt_green"
+        android:background="@drawable/rounded_element"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/subjectNameView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:gravity="center|start"
             android:text="@string/name"
             android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/subjectAuditoriumView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:gravity="center|start"
                 android:text="@string/auditorium_example"
                 android:textSize="16sp"
                 android:layout_marginStart="5dp" />
             <TextView
                 android:id="@+id/teacherNameView"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textSize="16sp"
                 android:maxLines="1"
+                android:textSize="16sp"
                 android:text="@string/teacher_name_example"
                 android:gravity="center|end"
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="1" />
+                android:layout_weight="3" />
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
