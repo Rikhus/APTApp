@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textViewStyle">@style/Exo2TextViewStyle</item>
         <item name="android:buttonStyle">@style/Exo2ButtonStyle</item>
         <item name="android:windowLightStatusBar">true</item>

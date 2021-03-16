@@ -18,15 +18,20 @@ import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class AptParse {
 
+    private static  final String SUBJECT_NUMBER_HTML_CLASS = ".card-header.bg-menu.text-white.pl-4.text-truncate .h3";
     private static final String SUBJECT_NAME_HTML_CLASS = ".h5 .d-md-none.text-center";
     private static final String SUBJECT_AUDITORIUM_HTML_CLASS = ".text-truncate .h5 a";
     private static final String SUBJECT_TIME_HTML_CLASS = ".text-truncate .h4";
     private static final String SUBJECT_TEACHER_HTML_CLASS = ".Staff";
 
+
+    private static  final String SUBJECT_NUMBER_FOR_TEACHERS_HTML_CLASS =".card-header.bg-menu.text-white.pl-4.pr-2.text-truncate .h3";
     private static final String SUBJECT_NAME_FOR_TEACHERS_HTML_CLASS = ".pl-2 .d-md-none.text-center.text-truncate";
     private static final String SUBJECT_GROUP_FOR_TEACHERS_HTML_CLASS = ".pl-2 .h5";
     private static final String SUBJECT_AUDITORIUM_FOR_TEACHERS_HTML_CLASS = ".pl-2 .h5 a";
@@ -130,17 +135,7 @@ public class AptParse {
                         subject.setSecondSubgroupSubjectAuditorium(subjectHTML2.selectFirst(SUBJECT_AUDITORIUM_HTML_CLASS).text());
                         subject.setSecondSubgroupSubjectTeacher(subjectHTML2.selectFirst(SUBJECT_TEACHER_HTML_CLASS).text());
 
-
-                        // потом добавляем время
-                        String subjectTime = subjectHTML.selectFirst(SUBJECT_TIME_HTML_CLASS).text();
-                        subject.setSubjectTimeStart(
-                                subjectTime.substring(0,2) + ":" +
-                                        subjectTime.substring(2,5));
-                        subject.setSubjectTimeEnd(
-                                subjectTime.substring(7,9) + ":" +
-                                        subjectTime.substring(9));
                         subject.setSubjectType(Subject.SubjectType.FOR_ALL_SUBGROUPS_SEPARATELY);
-
                     }
                     // если пара есть только для одной из подгрупп
                     else if(subjectHTML.select(".subGroup1").size() != 0 ^ subjectHTML.select(".subGroup2").size() != 0){
@@ -149,43 +144,40 @@ public class AptParse {
                             Element subjectHTML1 = subjectHTML.selectFirst(".subGroup1");
                             subject.setSubjectName("(1 п/гр) " + subjectHTML1.selectFirst(SUBJECT_NAME_HTML_CLASS).text());
                             subject.setSubjectAuditorium(subjectHTML1.selectFirst(SUBJECT_AUDITORIUM_HTML_CLASS).text());
-                            subject.setSubjectType(Subject.SubjectType.FOR_FIRST_SUBGROUP_ONLY);
                             subject.setSubjectTeacher(subjectHTML1.selectFirst(SUBJECT_TEACHER_HTML_CLASS).text());
+
+                            subject.setSubjectType(Subject.SubjectType.FOR_FIRST_SUBGROUP_ONLY);
                         }
                         // если для второй, то для нее
                         if(subjectHTML.select(".subGroup2").size() != 0){
                             Element subjectHTML2 = subjectHTML.selectFirst(".subGroup2");
                             subject.setSubjectName("(2 п/гр) " + subjectHTML2.selectFirst(SUBJECT_NAME_HTML_CLASS).text());
                             subject.setSubjectAuditorium(subjectHTML2.selectFirst(SUBJECT_AUDITORIUM_HTML_CLASS).text());
-                            subject.setSubjectType(Subject.SubjectType.FOR_SECOND_SUBGROUP_ONLY);
                             subject.setSubjectTeacher(subjectHTML2.selectFirst(SUBJECT_TEACHER_HTML_CLASS).text());
+
+                            subject.setSubjectType(Subject.SubjectType.FOR_SECOND_SUBGROUP_ONLY);
                         }
-                        // и вытаскиваем время
-                        String subjectTime = subjectHTML.selectFirst(SUBJECT_TIME_HTML_CLASS).text();
-                        subject.setSubjectTimeStart(
-                                subjectTime.substring(0,2) + ":" +
-                                        subjectTime.substring(2,5));
-                        subject.setSubjectTimeEnd(
-                                subjectTime.substring(7,9) + ":" +
-                                        subjectTime.substring(9));
                     }
                     // а тут если пара общая для всех
                     else{
-                        // название и аудитория
+                        // название, аудитория и преподаватель
                         subject.setSubjectName(subjectHTML.selectFirst(SUBJECT_NAME_HTML_CLASS).text());
                         subject.setSubjectAuditorium(subjectHTML.selectFirst(SUBJECT_AUDITORIUM_HTML_CLASS).text());
-                        // вытаскиваем время
-                        String subjectTime = subjectHTML.selectFirst(SUBJECT_TIME_HTML_CLASS).text();
-                        subject.setSubjectTimeStart(
-                                subjectTime.substring(0,2) + ":" +
-                                        subjectTime.substring(2,5));
-                        subject.setSubjectTimeEnd(
-                                subjectTime.substring(7,9) + ":" +
-                                        subjectTime.substring(9));
-                        subject.setSubjectType(Subject.SubjectType.FOR_ALL_SUBGROUPS);
-                        // добавляем преподавателя
                         subject.setSubjectTeacher(subjectHTML.selectFirst(SUBJECT_TEACHER_HTML_CLASS).text());
+
+                        subject.setSubjectType(Subject.SubjectType.FOR_ALL_SUBGROUPS);
                     }
+
+                    // потом добавляем время
+                    String subjectTime = subjectHTML.selectFirst(SUBJECT_TIME_HTML_CLASS).text();
+                    subject.setSubjectTimeStart(
+                            subjectTime.substring(0,2) + ":" +
+                                    subjectTime.substring(2,5));
+                    subject.setSubjectTimeEnd(
+                            subjectTime.substring(7,9) + ":" +
+                                    subjectTime.substring(9));
+
+                    subject.setSubjectNumber(subjectHTML.selectFirst(SUBJECT_NUMBER_HTML_CLASS).text());
                     // довабляем элемент в список
                     schedule.add(subject);
                 }
@@ -198,7 +190,7 @@ public class AptParse {
 
         // если расписания на этот день нет
         if (schedule.size() == 0){
-            Subject subjectNull = new Subject("", "", "", "", Subject.SubjectType.EMPTY, "");
+            Subject subjectNull = new Subject("", "", "", "", "", Subject.SubjectType.EMPTY, "");
             schedule.add(subjectNull);
         }
         return schedule;
@@ -227,14 +219,7 @@ public class AptParse {
                         subject.setSubjectName(subjectHTML.selectFirst(SUBJECT_NAME_FOR_TEACHERS_HTML_CLASS).text());
                         subject.setSubjectAuditorium(subjectHTML.selectFirst(SUBJECT_AUDITORIUM_FOR_TEACHERS_HTML_CLASS).text());
                         subject.setSubjectTeacher(subjectHTML.select(SUBJECT_GROUP_FOR_TEACHERS_HTML_CLASS).last().text());
-                        // вытаскиваем время
-                        String subjectTime = subjectHTML.selectFirst(SUBJECT_TIME_FOR_TEACHERS_HTML_CLASS).text();
-                        subject.setSubjectTimeStart(
-                                subjectTime.substring(0,2) + ":" +
-                                        subjectTime.substring(2,5));
-                        subject.setSubjectTimeEnd(
-                                subjectTime.substring(7,9) + ":" +
-                                        subjectTime.substring(9));
+
                         subject.setSubjectType(Subject.SubjectType.FOR_ALL_SUBGROUPS);
                     }
                     // если для какой-либо подгруппы
@@ -252,15 +237,19 @@ public class AptParse {
                         // группа и аудитория
                         subject.setSubjectAuditorium(subjectHTML.selectFirst(SUBJECT_AUDITORIUM_FOR_TEACHERS_HTML_CLASS).text());
                         subject.setSubjectTeacher(subjectHTML.select(SUBJECT_GROUP_FOR_TEACHERS_HTML_CLASS).last().text());
-                        // вытаскиваем время
-                        String subjectTime = subjectHTML.selectFirst(SUBJECT_TIME_FOR_TEACHERS_HTML_CLASS).text();
-                        subject.setSubjectTimeStart(
-                                subjectTime.substring(0,2) + ":" +
-                                        subjectTime.substring(2,5));
-                        subject.setSubjectTimeEnd(
-                                subjectTime.substring(7,9) + ":" +
-                                        subjectTime.substring(9));
+
                     }
+                    // вытаскиваем время
+                    String subjectTime = subjectHTML.selectFirst(SUBJECT_TIME_FOR_TEACHERS_HTML_CLASS).text();
+                    subject.setSubjectTimeStart(
+                            subjectTime.substring(0,2) + ":" +
+                                    subjectTime.substring(2,5));
+                    subject.setSubjectTimeEnd(
+                            subjectTime.substring(7,9) + ":" +
+                                    subjectTime.substring(9));
+
+                    subject.setSubjectNumber(subjectHTML.selectFirst(SUBJECT_NUMBER_FOR_TEACHERS_HTML_CLASS).text());
+
                     // довабляем элемент в список
                     schedule.add(subject);
                 }
@@ -273,7 +262,7 @@ public class AptParse {
 
         // если расписания на этот день нет
         if (schedule.size() == 0){
-            Subject subjectNull = new Subject("", "", "", "", Subject.SubjectType.EMPTY, "");
+            Subject subjectNull = new Subject("", "", "", "", "", Subject.SubjectType.EMPTY, "");
             schedule.add(subjectNull);
         }
         return schedule;
@@ -314,18 +303,19 @@ public class AptParse {
                     timeString.substring(2, 5);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-        Date pairsEndTime;
+        Calendar pairsEndTime = Calendar.getInstance();
+        // если расписание на сегодня есть, то
+        // получаем время начала последней пары + 15 минут
         try{
-            pairsEndTime = sdf.parse(endTimeString);
+            pairsEndTime.setTime(sdf.parse(endTimeString));
         }
+        // если нет, то возвращаем этот же день 00:00:00
         catch(Exception ex){
-            pairsEndTime = new Date();
+            pairsEndTime.set(Calendar.HOUR, 0);
+            pairsEndTime.set(Calendar.MINUTE, 0);
+            pairsEndTime.set(Calendar.SECOND, 0);
         }
 
-        Date currentDate = new Date();
-        pairsEndTime.setDate(currentDate.getDate());
-        pairsEndTime.setMonth(currentDate.getMonth());
-        pairsEndTime.setYear(currentDate.getYear());
-        return pairsEndTime;
+        return pairsEndTime.getTime();
     }
 }

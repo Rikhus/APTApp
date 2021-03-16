@@ -13,11 +13,14 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.rikhus.aptapp.Constants;
 import com.rikhus.aptapp.Parsing.AptParse;
 import com.rikhus.aptapp.R;
 import com.rikhus.aptapp.ScheduleActivity;
+import com.rikhus.aptapp.SelectUserTypeActivity;
 import com.rikhus.aptapp.UserType;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -87,15 +90,22 @@ public class NewScheduleReleasedReciever extends BroadcastReceiver {
 
                 createNotificationChannel("APTChannel", "APT app channel", notificationManager);
 
-                Intent myIntent = new Intent(context, ScheduleActivity.class);
-                PendingIntent pendingIntent = PendingIntent.getService(context, 0, myIntent, 0);
+                Intent intent = new Intent(context, ScheduleActivity.class);
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(
+                        context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+                );
 
                 NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_apt_for_widget)
-                        .setContentTitle("Уведомление!") // title for notification
+                        .setSmallIcon(R.drawable.apt_icon_for_action_bar)
+                        .setContentTitle("Уведомление!")
                         .setContentText("Вышло новое расписание!")
                         .setContentIntent(pendingIntent)
-                        .setAutoCancel(true); // clear notification after click
+                        .setAutoCancel(true);
 
                 notificationManager.notify(101, mBuilder.build());
             }

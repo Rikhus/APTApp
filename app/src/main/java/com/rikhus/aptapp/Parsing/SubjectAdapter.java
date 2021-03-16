@@ -16,6 +16,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
     private ArrayList<Subject> subjects = new ArrayList<>();
 
     class TextViewHolder extends RecyclerView.ViewHolder{
+        TextView subjectNumberView;
         TextView subjectNameView;
         TextView firstSubgroupSubjectNameView;
         TextView secondSubgroupSubjectNameView;
@@ -28,14 +29,14 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
         TextView firstSubgroupTeacherView;
         TextView secondSubgroupTeacherView;
 
-        TextView subjectTimeViewStart;
-        TextView subjectTimeViewEnd;
-        TextView subjectDash;
+        TextView subjectTimeView;
 
         View view;
 
         public TextViewHolder(View itemView){
             super(itemView);
+
+            subjectNumberView = itemView.findViewById(R.id.subjectNumberView);
             subjectNameView = itemView.findViewById(R.id.subjectNameView);
             firstSubgroupSubjectNameView = itemView.findViewById(R.id.firstSubgroupSubjectNameView);
             secondSubgroupSubjectNameView = itemView.findViewById(R.id.secondSubgroupSubjectNameView);
@@ -48,9 +49,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
             firstSubgroupTeacherView = itemView.findViewById(R.id.firstSubgroupTeacherNameView);
             secondSubgroupTeacherView = itemView.findViewById(R.id.secondSubgroupTeacherNameView);
 
-            subjectTimeViewStart = itemView.findViewById(R.id.subjectTimeStart);
-            subjectTimeViewEnd = itemView.findViewById(R.id.subjectTimeEnd);
-            subjectDash = itemView.findViewById(R.id.subjectDash);
+            subjectTimeView = itemView.findViewById(R.id.subjectTimeView);
             view = itemView;
         }
 
@@ -101,9 +100,8 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.TextView
                     subjectAuditoriumView.setText(subject.getSubjectAuditorium());
                 }
             }
-
-            subjectTimeViewStart.setText(subject.getSubjectTimeStart());
-            subjectTimeViewEnd.setText(subject.getSubjectTimeEnd());
+            subjectNumberView.setText(subject.getSubjectNumber() + " пара");
+            subjectTimeView.setText(subject.getSubjectTimeStart() + " - " + subject.getSubjectTimeEnd());
         }
     }
 
