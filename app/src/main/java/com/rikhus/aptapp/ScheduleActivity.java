@@ -56,7 +56,7 @@ public class ScheduleActivity extends AppCompatActivity {
     LinearLayout.LayoutParams scheduleRecyclerViewParams;
 
     private final String DATE_VARIABLE = "DATE_VARIABLE";
-    private final int CHECK_PERIOD_SECONDS = 1800;
+    private final int CHECK_PERIOD_SECONDS = 300;
     //private final int CHECK_PERIOD_SECONDS = 60;
 
     @Override
@@ -99,7 +99,6 @@ public class ScheduleActivity extends AppCompatActivity {
         // инициализация графических элементов
         textViewDate = findViewById(R.id.textViewDate);
         scheduleRecyclerView = findViewById(R.id.scheduleRecyclerView);
-        scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         dateSelectMenu = findViewById(R.id.dateSelectMenu);
         scheduleRecyclerViewParams.leftMargin = 20;
         scheduleRecyclerViewParams.rightMargin = 20;

@@ -13,9 +13,8 @@
         <item name="android:background">?android:attr/colorForeground</item>
     </style>
 
-    <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="background">@color/colorPrimary</item>
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textViewStyle">@style/Exo2TextViewStyle</item>
         <item name="android:buttonStyle">@style/Exo2ButtonStyle</item>
     </style>

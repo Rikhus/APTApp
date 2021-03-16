@@ -18,7 +18,9 @@ import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class AptParse {
 
@@ -301,18 +303,19 @@ public class AptParse {
                     timeString.substring(2, 5);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-        Date pairsEndTime;
+        Calendar pairsEndTime = Calendar.getInstance();
+        // если расписание на сегодня есть, то
+        // получаем время начала последней пары + 15 минут
         try{
-            pairsEndTime = sdf.parse(endTimeString);
+            pairsEndTime.setTime(sdf.parse(endTimeString));
         }
+        // если нет, то возвращаем этот же день 00:00:00
         catch(Exception ex){
-            pairsEndTime = new Date();
+            pairsEndTime.set(Calendar.HOUR, 0);
+            pairsEndTime.set(Calendar.MINUTE, 0);
+            pairsEndTime.set(Calendar.SECOND, 0);
         }
 
-        Date currentDate = new Date();
-        pairsEndTime.setDate(currentDate.getDate());
-        pairsEndTime.setMonth(currentDate.getMonth());
-        pairsEndTime.setYear(currentDate.getYear());
-        return pairsEndTime;
+        return pairsEndTime.getTime();
     }
 }
