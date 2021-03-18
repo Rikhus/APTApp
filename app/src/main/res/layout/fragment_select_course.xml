@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical"
     tools:context=".SelectCourseFragment">
     <Space
@@ -23,7 +23,7 @@
             android:layout_marginBottom="5dp"
             android:gravity="center"
             android:text="@string/choose_course_number"
-            android:textColor="@color/apt_text"
+            android:textColor="?attr/apt_text_color"
             android:textSize="20sp" />
     </LinearLayout>
     <LinearLayout
@@ -45,7 +45,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rouned_button"
-                android:backgroundTint="@color/apt_gray"
+                android:backgroundTint="?attr/apt_all_subgroups_color"
+                android:textColor="?attr/apt_text_color"
                 android:text="@string/first_course" />
             <Button
                 android:id="@+id/secondCourseButton"
@@ -54,7 +55,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rouned_button"
-                android:backgroundTint="@color/apt_gray"
+                android:backgroundTint="?attr/apt_all_subgroups_color"
+                android:textColor="?attr/apt_text_color"
                 android:text="@string/second_course" />
         </LinearLayout>
         <LinearLayout
@@ -71,7 +73,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rouned_button"
-                android:backgroundTint="@color/apt_gray"
+                android:backgroundTint="?attr/apt_all_subgroups_color"
+                android:textColor="?attr/apt_text_color"
                 android:text="@string/third_course" />
             <Button
                 android:id="@+id/fourthCourseButton"
@@ -80,7 +83,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="@drawable/rouned_button"
-                android:backgroundTint="@color/apt_gray"
+                android:backgroundTint="?attr/apt_all_subgroups_color"
+                android:textColor="?attr/apt_text_color"
                 android:text="@string/fourth_course" />
         </LinearLayout>
     </LinearLayout>

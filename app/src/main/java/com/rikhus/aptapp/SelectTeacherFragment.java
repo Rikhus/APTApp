@@ -93,7 +93,12 @@ public class SelectTeacherFragment extends Fragment {
                 }
 
                 // применяем изменения списка в адаптере
-                adapter.notifyDataSetChanged();
+                try {
+                    adapter.notifyDataSetChanged();
+                }
+                catch (Exception ex){
+                    ex.printStackTrace();
+                }
             }
 
             @Override

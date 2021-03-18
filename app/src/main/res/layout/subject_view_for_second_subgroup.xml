@@ -6,7 +6,7 @@
     android:gravity="center"
     android:layout_marginBottom="10dp"
     android:background="@drawable/rounded_element"
-    android:backgroundTint="@color/colorAccent">
+    android:backgroundTint="?attr/colorAccent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:gravity="center|start"
             android:textSize="20sp"
-            android:textColor="@color/apt_background"
+            android:textColor="?attr/apt_text_color"
             android:text="I пара"/>
         <TextView
             android:id="@+id/subjectTimeView"
@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:textSize="20sp"
             android:gravity="center|end"
-            android:textColor="@color/apt_background"
+            android:textColor="?attr/apt_text_color"
             android:text="08:00 - 09:25"/>
     </LinearLayout>
 
@@ -42,7 +42,7 @@
         android:layout_weight="3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:backgroundTint="@color/apt_blue"
+        android:backgroundTint="?attr/apt_second_subgroup_color"
         android:background="@drawable/rounded_element"
         android:orientation="vertical">
 
@@ -55,6 +55,7 @@
             android:layout_marginStart="10dp"
             android:gravity="center|start"
             android:text="@string/name"
+            android:textColor="?attr/apt_text_color"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -73,6 +74,7 @@
                 android:gravity="center|start"
                 android:text="@string/auditorium_example"
                 android:textSize="16sp"
+                android:textColor="?attr/apt_text_color"
                 android:layout_marginStart="5dp" />
             <TextView
                 android:id="@+id/teacherNameView"
@@ -81,6 +83,7 @@
                 android:maxLines="1"
                 android:textSize="16sp"
                 android:text="@string/teacher_name_example"
+                android:textColor="?attr/apt_text_color"
                 android:gravity="center|end"
                 android:layout_marginRight="10dp"
                 android:layout_marginEnd="10dp"

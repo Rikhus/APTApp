@@ -7,7 +7,7 @@
     android:gravity="center"
     android:layout_marginBottom="10dp"
     android:background="@drawable/rounded_element"
-    android:backgroundTint="@color/colorAccent">
+    android:backgroundTint="?attr/colorAccent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:gravity="center|start"
             android:textSize="20sp"
-            android:textColor="@color/apt_background"
+            android:textColor="?attr/apt_text_color"
             android:text="I пара"/>
         <TextView
             android:id="@+id/subjectTimeView"
@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:textSize="20sp"
             android:gravity="center|end"
-            android:textColor="@color/apt_background"
+            android:textColor="?attr/apt_text_color"
             android:text="08:00 - 09:25"/>
     </LinearLayout>
 
@@ -45,7 +45,7 @@
         android:orientation="horizontal"
         android:layout_weight="3"
         android:background="@drawable/first_subgroup_from_two_rounded"
-        android:backgroundTint="@color/apt_green">
+        android:backgroundTint="?attr/apt_first_subgroup_color">
 
 
         <LinearLayout
@@ -63,6 +63,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center|start"
                 android:layout_weight="2"
+                android:textColor="?attr/apt_text_color"
                 android:text="@string/name"
                 android:textSize="20sp" />
 
@@ -78,6 +79,7 @@
                     android:layout_weight="3"
                     android:gravity="center|start"
                     android:text="@string/auditorium_example"
+                    android:textColor="?attr/apt_text_color"
                     android:textSize="16sp" />
                 <TextView
                     android:id="@+id/firstSubgroupTeacherNameView"
@@ -86,6 +88,7 @@
                     android:textSize="16sp"
                     android:maxLines="1"
                     android:text="@string/teacher_name_example"
+                    android:textColor="?attr/apt_text_color"
                     android:gravity="center|end"
                     android:layout_weight="1" />
             </LinearLayout>
@@ -101,7 +104,7 @@
         android:orientation="horizontal"
         android:layout_weight="3"
         android:background="@drawable/second_subgroup_from_two_rounded"
-        android:backgroundTint="@color/apt_blue">
+        android:backgroundTint="?attr/apt_second_subgroup_color">
 
 
         <LinearLayout
@@ -120,6 +123,7 @@
                 android:gravity="center|start"
                 android:layout_marginTop="8dp"
                 android:text="@string/name"
+                android:textColor="?attr/apt_text_color"
                 android:textSize="20sp" />
 
             <LinearLayout
@@ -134,6 +138,7 @@
                     android:layout_weight="3"
                     android:gravity="center|start"
                     android:text="@string/auditorium_example"
+                    android:textColor="?attr/apt_text_color"
                     android:textSize="16sp"/>
                 <TextView
                     android:id="@+id/secondSubgroupTeacherNameView"
@@ -142,6 +147,7 @@
                     android:textSize="16sp"
                     android:maxLines="1"
                     android:text="@string/teacher_name_example"
+                    android:textColor="?attr/apt_text_color"
                     android:gravity="center|end"
                     android:layout_marginRight="15dp"
                     android:layout_marginEnd="15dp"

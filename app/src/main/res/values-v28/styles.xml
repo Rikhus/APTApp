@@ -2,7 +2,6 @@
 <resources>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:dialogCornerRadius">15dp</item>
         <item name="fontFamily">@font/exo_2</item>
     </style>

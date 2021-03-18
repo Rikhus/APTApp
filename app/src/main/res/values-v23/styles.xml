@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:textViewStyle">@style/Exo2TextViewStyle</item>
-        <item name="android:buttonStyle">@style/Exo2ButtonStyle</item>
+    <style name="LightTheme" parent="BaseTheme">
         <item name="android:windowLightStatusBar">true</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">#927FBF</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="apt_first_subgroup_color">#BEF9E7</item>
+        <item name="apt_second_subgroup_color">#C2CBEF</item>
+        <item name="apt_all_subgroups_color">#EDF5F5</item>
+        <item name="apt_text_color">#5F5F5F</item>
+    </style>
+
+    <style name="DarkTheme" parent="BaseTheme">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="colorAccent">#9F8CCD</item>
+        <item name="colorPrimaryDark">#363B4E</item>
+        <item name="colorPrimary">#363B4E</item>
+        <item name="apt_first_subgroup_color">#8CBFB0</item>
+        <item name="apt_second_subgroup_color">#767D9B</item>
+        <item name="apt_all_subgroups_color">#4A5068</item>
+        <item name="apt_text_color">#FFFFFF</item>
     </style>
 </resources>

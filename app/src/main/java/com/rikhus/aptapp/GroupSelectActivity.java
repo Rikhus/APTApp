@@ -83,7 +83,7 @@ public class GroupSelectActivity extends AppCompatActivity {
             for (Group group : groups){
                 groupsNames.add(group.getGroupName());
             }
-            adapter = new ArrayAdapter(getApplicationContext(), R.layout.select_group_item_view, groupsNames);
+            adapter = new ArrayAdapter(GroupSelectActivity.this, R.layout.select_group_item_view, groupsNames);
             groupsListView.setAdapter(adapter);
         }
     }
