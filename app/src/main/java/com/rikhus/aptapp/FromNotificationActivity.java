@@ -2,12 +2,18 @@ package com.rikhus.aptapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.rikhus.aptapp.ScheduleNotification.NotificationData;
+
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 
 public class FromNotificationActivity extends AppCompatActivity {
+
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,8 @@ public class FromNotificationActivity extends AppCompatActivity {
             String groupName = "";
             String teacherid = "";
             String teacherName = "";
+            String dateToOpenSchedule = "";
+            dateToOpenSchedule = sdf.format(NotificationData.getLastDayNotified(this));
 
             if(userType.equals("STUDENT")){
                 groupId = text.split(":")[1];
@@ -52,6 +60,12 @@ public class FromNotificationActivity extends AppCompatActivity {
             else{
                 throw new Exception();
             }
+
+            // открыть расписание на дату, на которое вышло расписание
+            intent.putExtra("date_to_show_schedule", dateToOpenSchedule);
+
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             startActivity(intent);
         }

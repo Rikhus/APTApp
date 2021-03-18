@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
@@ -68,30 +71,34 @@ public class SelectTeacherFragment extends Fragment {
 
         // при нажатии ентер в поле поиска
         textInputTeacherName = view.findViewById(R.id.textInputTeacherName);
-        textInputTeacherName.setOnKeyListener(new View.OnKeyListener() {
+        textInputTeacherName.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // только после отжатия кнопки ентер
-                if (event.getAction() == KeyEvent.ACTION_DOWN &&
-                        keyCode == KeyEvent.KEYCODE_ENTER){
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    // очищаем коллекции
-                    teachersToShow.clear();
-                    teachersNames.clear();
+            }
 
-                    // находим вхождения строки поиска в списке учителей
-                    String searchedTeacherName = textInputTeacherName.getText().toString();
-                    for (Teacher teacher : teachers){
-                        if (teacher.getName().contains(searchedTeacherName)){
-                            teachersToShow.add(teacher);
-                            teachersNames.add(teacher.getName());
-                        }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // очищаем коллекции
+                teachersToShow.clear();
+                teachersNames.clear();
+
+                // находим вхождения строки поиска в списке учителей
+                String searchedTeacherName = textInputTeacherName.getText().toString();
+                for (Teacher teacher : teachers){
+                    if (teacher.getName().toLowerCase().contains(searchedTeacherName.toLowerCase())){
+                        teachersToShow.add(teacher);
+                        teachersNames.add(teacher.getName());
                     }
-
-                    // применяем изменения списка в адаптере
-                    adapter.notifyDataSetChanged();
                 }
-                return false;
+
+                // применяем изменения списка в адаптере
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 

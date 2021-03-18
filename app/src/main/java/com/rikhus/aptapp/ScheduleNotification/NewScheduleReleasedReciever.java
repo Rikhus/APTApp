@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.rikhus.aptapp.Constants;
+import com.rikhus.aptapp.FromNotificationActivity;
 import com.rikhus.aptapp.Parsing.AptParse;
 import com.rikhus.aptapp.R;
 import com.rikhus.aptapp.ScheduleActivity;
@@ -90,7 +91,7 @@ public class NewScheduleReleasedReciever extends BroadcastReceiver {
 
                 createNotificationChannel("APTChannel", "APT app channel", notificationManager);
 
-                Intent intent = new Intent(context, ScheduleActivity.class);
+                Intent intent = new Intent(context, FromNotificationActivity.class);
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_CLEAR_TASK);
