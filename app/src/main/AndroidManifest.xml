@@ -43,13 +43,12 @@
             android:name=".ScheduleNotification.NewScheduleReleasedReciever"
             android:exported="true">
             <intent-filter>
-
-                <!-- The actions you wish to listen to, below is an example -->
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ScheduleActivity" />
+        <activity android:name=".ScheduleActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".GroupSelectActivity" />
         <activity
             android:name=".SelectUserTypeActivity"

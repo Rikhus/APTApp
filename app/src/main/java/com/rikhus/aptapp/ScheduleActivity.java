@@ -67,7 +67,7 @@ public class ScheduleActivity extends AppCompatActivity {
         // форматирование дат
         sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        // получение выбранной группы
+        // получение выбранной группы или преподавателя
         Intent groupsIntent = getIntent();
 
         userType = (UserType) groupsIntent.getSerializableExtra("user_type");
@@ -108,13 +108,38 @@ public class ScheduleActivity extends AppCompatActivity {
             adapter = new SubjectAdapter();
             scheduleRecyclerView.setAdapter(adapter);
 
-            // запуск автоматического подбора даты и расписания
-            ScheduleParsingStarter scheduleParsingStarter = new ScheduleParsingStarter();
-            if (userType == UserType.STUDENT){
-                scheduleParsingStarter.execute(groupId);
+            // если не указана дата (т.е не запущено с уведомления)
+            if (groupsIntent.getStringExtra("date_to_show_schedule") == null) {
+                // запуск автоматического подбора даты и расписания
+                ScheduleParsingStarter scheduleParsingStarter = new ScheduleParsingStarter();
+
+                if (userType == UserType.STUDENT) {
+                    scheduleParsingStarter.execute(groupId);
+                }
+                if (userType == UserType.TEACHER) {
+                    scheduleParsingStarter.execute(teacherId);
+                }
             }
-            if (userType == UserType.TEACHER){
-                scheduleParsingStarter.execute(teacherId);
+
+            // если запущено с уведомления
+            else{
+                // открываем расписание на следующий день
+                String dateToShowScheduleString = groupsIntent.getStringExtra("date_to_show_schedule");
+                ScheduleGetter scheduleGetter = new ScheduleGetter();
+                if (userType == UserType.STUDENT) {
+                    scheduleGetter.execute(groupId, dateToShowScheduleString);
+                }
+                if (userType == UserType.TEACHER) {
+                    scheduleGetter.execute(teacherId, dateToShowScheduleString);
+                }
+                try {
+                    // выводим дату на экране
+                    Calendar dateToShowSchedule = Calendar.getInstance();
+                    dateToShowSchedule.setTime(sdf.parse(dateToShowScheduleString));
+                    textViewDate.setText(formatDate(dateToShowSchedule));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
 
         }

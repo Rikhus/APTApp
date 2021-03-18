@@ -307,13 +307,17 @@ public class AptParse {
         // если расписание на сегодня есть, то
         // получаем время начала последней пары + 15 минут
         try{
-            pairsEndTime.setTime(sdf.parse(endTimeString));
+            endTimeString = endTimeString.replace(" ", "");
+            int pairsEndHour = Integer.parseInt(endTimeString.split(":")[0]);
+            int pairsEndMinute = Integer.parseInt(endTimeString.split(":")[1]);
+            pairsEndTime.set(Calendar.HOUR_OF_DAY, pairsEndHour);
+            pairsEndTime.set(Calendar.MINUTE, pairsEndMinute);
+            pairsEndTime.add(Calendar.MINUTE, 15);
         }
         // если нет, то возвращаем этот же день 00:00:00
         catch(Exception ex){
-            pairsEndTime.set(Calendar.HOUR, 0);
+            pairsEndTime.set(Calendar.HOUR_OF_DAY, 0);
             pairsEndTime.set(Calendar.MINUTE, 0);
-            pairsEndTime.set(Calendar.SECOND, 0);
         }
 
         return pairsEndTime.getTime();
