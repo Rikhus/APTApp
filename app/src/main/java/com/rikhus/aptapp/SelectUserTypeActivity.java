@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +25,18 @@ public class SelectUserTypeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        String themeName = sharedPreferences.getString("ThemeName", "light");
+
+        switch (themeName){
+            case ("light"):
+                setTheme(R.style.LightTheme);
+                break;
+            case ("dark"):
+                setTheme(R.style.DarkTheme);
+                break;
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_user_type);
 

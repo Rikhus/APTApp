@@ -25,7 +25,7 @@
         <item name="apt_first_subgroup_color">#BEF9E7</item>
         <item name="apt_second_subgroup_color">#C2CBEF</item>
         <item name="apt_all_subgroups_color">#EDF5F5</item>
-        <item name="apt_text_color">#5F5F5F</item>
+        <item name="apt_text_color">#363B4E</item>
     </style>
 
     <style name="DarkTheme" parent="BaseTheme">

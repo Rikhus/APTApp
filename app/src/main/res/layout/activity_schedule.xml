@@ -8,17 +8,40 @@
     android:background="?attr/colorPrimary"
     tools:context=".ScheduleActivity">
 
-    <TextView
-        android:id="@+id/scheduleForText"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="0.8"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_weight="0.8"
-        android:gravity="center"
-        android:text="@string/schedule_for"
-        android:textColor="?attr/apt_text_color"
-        android:textSize="20sp" />
+        android:orientation="horizontal">
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.4"/>
+        <TextView
+            android:id="@+id/scheduleForText"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="center"
+            android:text="@string/schedule_for"
+            android:textColor="?attr/apt_text_color"
+            android:textSize="20sp" />
+
+        <include
+            android:id="@+id/menuButton"
+            layout="@layout/menu_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clickable="true" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"/>
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

@@ -13,7 +13,7 @@
 
     <string name="connection_error">Ошибка при получении данных</string>
 
-    <string name="schedule_for">Расписание для</string>
+    <string name="schedule_for">ИС-181б</string>
     <string name="name">Название</string>
     <string name="teacher">Преподаватель</string>
     <string name="time_start">08:00</string>
@@ -32,8 +32,6 @@
     <string name="students">Студенты</string>
     <string name="teachers">Преподаватели</string>
     <string name="choose_course_number">Выберите номер курса</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="choose_teacher">Выберите преподавателя</string>
     <string name="enter_name">Введите имя...</string>
     <string name="teacher_name_example">Иванов Иван Иванович</string>

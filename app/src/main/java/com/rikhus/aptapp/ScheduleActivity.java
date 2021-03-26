@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -39,6 +41,7 @@ public class ScheduleActivity extends AppCompatActivity {
     TextView textViewDate;
     TextView scheduleForText;
     LinearLayout dateSelectMenu;
+    LinearLayout menuButton;
 
     ScheduleGetter scheduleGetter;
 
@@ -61,6 +64,18 @@ public class ScheduleActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPreferencesTheme = getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        String themeName = sharedPreferencesTheme.getString("ThemeName", "light");
+
+        switch (themeName){
+            case ("light"):
+                setTheme(R.style.LightTheme);
+                break;
+            case ("dark"):
+                setTheme(R.style.DarkTheme);
+                break;
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
@@ -89,7 +104,7 @@ public class ScheduleActivity extends AppCompatActivity {
         scheduleForText = findViewById(R.id.scheduleForText);
         String scheduleForString = "";
         if (userType == UserType.STUDENT){
-            scheduleForString = getResources().getString(R.string.schedule_for) + " " + groupName;
+            scheduleForString = groupName;
         }
         else{
             scheduleForString = teacherName;
@@ -102,6 +117,13 @@ public class ScheduleActivity extends AppCompatActivity {
         dateSelectMenu = findViewById(R.id.dateSelectMenu);
         scheduleRecyclerViewParams.leftMargin = 20;
         scheduleRecyclerViewParams.rightMargin = 20;
+        menuButton = findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ScheduleActivity.this, SettingsActivity.class));
+            }
+        });
 
         // если это активити запущено с нуля
         if (savedInstanceState == null){
@@ -144,11 +166,26 @@ public class ScheduleActivity extends AppCompatActivity {
 
         }
 
-        // создание аларма и уведомления о новом расписании
-        Intent intent = new Intent(this, NewScheduleReleasedReciever.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), CHECK_PERIOD_SECONDS * 1000, pendingIntent);
+        // создание аларма и уведомления о новом расписании если его не было
+        SharedPreferences sharedPreferencesNotification = getSharedPreferences("Notification", Context.MODE_PRIVATE);
+        Boolean isNotificationEnabled = sharedPreferencesNotification.getBoolean("isEnabled", true);
+        Boolean isNotificationServiceStarted = sharedPreferencesNotification.getBoolean("isStarted", false);
+
+        if(isNotificationEnabled && !isNotificationServiceStarted) {
+            Intent intent = new Intent(this, NewScheduleReleasedReciever.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0);
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), CHECK_PERIOD_SECONDS * 1000, pendingIntent);
+
+            setIsNotificationServiceStarted(true);
+        }
+    }
+
+    private void setIsNotificationServiceStarted(Boolean isStarted){
+        SharedPreferences preferences = getSharedPreferences("Notification", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("isStarted", isStarted);
+        editor.apply();
     }
 
     public void setupLayoutsForViews(){
