@@ -2,7 +2,9 @@ package com.rikhus.aptapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +30,18 @@ public class GroupSelectActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        String themeName = sharedPreferences.getString("ThemeName", "light");
+
+        switch (themeName){
+            case ("light"):
+                setTheme(R.style.LightTheme);
+                break;
+            case ("dark"):
+                setTheme(R.style.DarkTheme);
+                break;
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_select);
 
@@ -83,7 +97,7 @@ public class GroupSelectActivity extends AppCompatActivity {
             for (Group group : groups){
                 groupsNames.add(group.getGroupName());
             }
-            adapter = new ArrayAdapter(getApplicationContext(), R.layout.select_group_item_view, groupsNames);
+            adapter = new ArrayAdapter(GroupSelectActivity.this, R.layout.select_group_item_view, groupsNames);
             groupsListView.setAdapter(adapter);
         }
     }

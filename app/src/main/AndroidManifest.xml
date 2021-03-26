@@ -12,11 +12,11 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/apt_icon"
         android:supportsRtl="true"
-        android:theme="@style/BaseTheme"
+        android:theme="@style/LightTheme"
         android:versionCode="2"
-        android:versionName="2.5"
+        android:versionName="2.7"
         android:windowSoftInputMode="adjustNothing">
-        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".SettingsActivity" />
         <activity
             android:name=".FromNotificationActivity"
             android:excludeFromRecents="true"
@@ -47,8 +47,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ScheduleActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".ScheduleActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".GroupSelectActivity" />
         <activity
             android:name=".SelectUserTypeActivity"

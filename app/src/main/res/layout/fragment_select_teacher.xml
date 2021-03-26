@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimary"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical"
     tools:context=".SelectCourseFragment">
     <Space
@@ -19,7 +19,7 @@
         android:layout_marginBottom="5dp"
         android:gravity="center"
         android:text="@string/choose_teacher"
-        android:textColor="@color/apt_text"
+        android:textColor="?attr/apt_text_color"
         android:textSize="20sp" />
     <Space
         android:layout_width="match_parent"
@@ -39,6 +39,7 @@
             android:maxLines="1"
             android:layout_height="match_parent"
             android:hint="@string/enter_name"
+            android:textColor="?attr/apt_text_color"
             android:inputType="textPersonName"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,5 +54,5 @@
         android:layout_weight="8"
         android:scrollbars="none"
         android:background="@drawable/rounded_element"
-        android:backgroundTint="@color/apt_gray"/>
+        android:backgroundTint="?attr/apt_all_subgroups_color"/>
 </LinearLayout>

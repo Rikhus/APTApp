@@ -2,5 +2,11 @@
     <declare-styleable name="AppWidgetAttrs">
         <attr name="appWidgetBackgroundColor" format="color" />
         <attr name="appWidgetTextColor" format="color" />
+
+        <attr name="apt_first_subgroup_color" format="color"/>
+        <attr name="apt_second_subgroup_color" format="color"/>
+        <attr name="apt_all_subgroups_color" format="color"/>
+        <attr name="apt_text_color" format="color"/>
+
     </declare-styleable>
 </resources>
