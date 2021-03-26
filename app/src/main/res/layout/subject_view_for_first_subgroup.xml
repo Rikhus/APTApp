@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:gravity="center|start"
             android:textSize="20sp"
-            android:textColor="?attr/apt_text_color"
+            android:textColor="?attr/colorPrimary"
             android:text="I пара"/>
         <TextView
             android:id="@+id/subjectTimeView"
@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:textSize="20sp"
             android:gravity="center|end"
-            android:textColor="?attr/apt_text_color"
+            android:textColor="?attr/colorPrimary"
             android:text="08:00 - 09:25"/>
     </LinearLayout>
 
