@@ -23,25 +23,13 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class GroupSelectActivity extends AppCompatActivity {
+public class GroupSelectActivity extends ThemedActivity {
     private ArrayList<Group> groups = new ArrayList<>();
     private ArrayAdapter adapter;
     private ListView groupsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
-        String themeName = sharedPreferences.getString("ThemeName", "light");
-
-        switch (themeName){
-            case ("light"):
-                setTheme(R.style.LightTheme);
-                break;
-            case ("dark"):
-                setTheme(R.style.DarkTheme);
-                break;
-        }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_select);
 
@@ -53,8 +41,8 @@ public class GroupSelectActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), ScheduleActivity.class);
                 intent.putExtra("user_type", UserType.STUDENT);
-                intent.putExtra("group_name", groups.get(position).getGroupName());
-                intent.putExtra("group_id", groups.get(position).getGroupId());
+                intent.putExtra("name", groups.get(position).getGroupName());
+                intent.putExtra("id", groups.get(position).getGroupId());
 
                 startActivity(intent);
                 GroupSelectActivity.this.finish();

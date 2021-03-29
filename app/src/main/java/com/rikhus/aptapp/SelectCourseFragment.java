@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 public class SelectCourseFragment extends Fragment {
 
@@ -39,6 +40,12 @@ public class SelectCourseFragment extends Fragment {
         Button secondCourseButton = view.findViewById(R.id.secondCourseButton);
         Button thirdCourseButton = view.findViewById(R.id.thirdCourseButton);
         Button fourthCourseButton = view.findViewById(R.id.fourthCourseButton);
+        LinearLayout menuButton = view.findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), SettingsActivity.class));
+            }});
 
 
         //onClick для кнопок выбора курса

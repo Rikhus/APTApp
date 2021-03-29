@@ -18,72 +18,33 @@ import com.google.gson.TypeAdapterFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class SelectUserTypeActivity extends AppCompatActivity {
+public class SelectUserTypeActivity extends ThemedActivity {
 
     TabLayout userTypeTabLayout;
     ViewPager fragmentChoose;
 
+    SharedPreferences scheduleData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
-        String themeName = sharedPreferences.getString("ThemeName", "light");
-
-        switch (themeName){
-            case ("light"):
-                setTheme(R.style.LightTheme);
-                break;
-            case ("dark"):
-                setTheme(R.style.DarkTheme);
-                break;
-        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_user_type);
 
+        scheduleData = getSharedPreferences("ScheduleData", Context.MODE_PRIVATE);
+        String userType = scheduleData.getString("userType", null);
+        String id = scheduleData.getString("id", null);
+        String name = scheduleData.getString("name", null);
         // если до этого открывалось расписание это не перезагрузка активити при перевороте телефона перекидываем на ту же группу
-        if (savedInstanceState == null) {
-            FileInputStream fin = null;
-            try {
 
-                fin = openFileInput(Constants.FILENAME);
-                byte[] bytes = new byte[fin.available()];
-                fin.read(bytes);
-                String text = new String(bytes);
-                if (text.equals("")){
-                    throw new Exception();
-                }
-                String userType = text.split(":")[0];
 
-                String groupId = "";
-                String groupName = "";
-                String teacherid = "";
-                String teacherName = "";
+        Intent intent = new Intent(this, ScheduleActivity.class);
 
-                Intent intent = new Intent(this, ScheduleActivity.class);
-
-                if(userType.equals("STUDENT")){
-                    groupId = text.split(":")[1];
-                    groupName = text.split(":")[2];
-                    groupId = groupId.replace(" ", "");
-                    groupName = groupName.replace(" ", "");
-                    intent.putExtra("user_type", UserType.STUDENT);
-                    intent.putExtra("group_id", groupId);
-                    intent.putExtra("group_name", groupName);
-                }
-                else if (userType.equals("TEACHER")){
-                    teacherid = text.split(":")[1];
-                    teacherName = text.split(":")[2];
-                    intent.putExtra("user_type", UserType.TEACHER);
-                    intent.putExtra("teacher_id", teacherid);
-                    intent.putExtra("teacher_name", teacherName);
-                }
-                else{
-                    throw new Exception();
-                }
-
-                startActivity(intent);
-            }
-            catch(Exception ex){}
+        if(userType != null && id != null && name != null) {
+            intent.putExtra("user_type", UserType.valueOf(userType));
+            intent.putExtra("id", id);
+            intent.putExtra("name", name);
+            startActivity(intent);
         }
 
         fragmentChoose = findViewById(R.id.fragmentChoose);
