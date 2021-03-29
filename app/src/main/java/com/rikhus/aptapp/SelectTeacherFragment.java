@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +70,13 @@ public class SelectTeacherFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        LinearLayout menuButton = view.findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), SettingsActivity.class));
+            }});
 
         // при нажатии ентер в поле поиска
         textInputTeacherName = view.findViewById(R.id.textInputTeacherName);

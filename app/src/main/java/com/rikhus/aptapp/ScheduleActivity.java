@@ -1,8 +1,6 @@
 package com.rikhus.aptapp;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlarmManager;
@@ -25,7 +23,6 @@ import com.rikhus.aptapp.Parsing.AptParse;
 import com.rikhus.aptapp.Parsing.Subject;
 import com.rikhus.aptapp.Parsing.SubjectAdapter;
 import com.rikhus.aptapp.ScheduleNotification.NewScheduleReleasedReciever;
-import com.rikhus.aptapp.ScheduleNotification.NotificationData;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ScheduleActivity extends AppCompatActivity {
+public class ScheduleActivity extends ThemedActivity {
     RecyclerView scheduleRecyclerView;
     Calendar dateAndTime = Calendar.getInstance();
     TextView textViewDate;
@@ -58,23 +55,15 @@ public class ScheduleActivity extends AppCompatActivity {
     LinearLayout.LayoutParams scheduleForTextParams;
     LinearLayout.LayoutParams scheduleRecyclerViewParams;
 
+    SharedPreferences scheduleData;
+    SharedPreferences.Editor scheduleDataEditor;
+
     private final String DATE_VARIABLE = "DATE_VARIABLE";
     private final int CHECK_PERIOD_SECONDS = 300;
     //private final int CHECK_PERIOD_SECONDS = 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences sharedPreferencesTheme = getSharedPreferences("Theme", Context.MODE_PRIVATE);
-        String themeName = sharedPreferencesTheme.getString("ThemeName", "light");
-
-        switch (themeName){
-            case ("light"):
-                setTheme(R.style.LightTheme);
-                break;
-            case ("dark"):
-                setTheme(R.style.DarkTheme);
-                break;
-        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
@@ -89,12 +78,12 @@ public class ScheduleActivity extends AppCompatActivity {
 
         // в зависимости от типа пользователя получаем его данные
         if (userType == UserType.STUDENT){
-            groupId = groupsIntent.getStringExtra("group_id");
-            groupName = groupsIntent.getStringExtra("group_name");
+            groupId = groupsIntent.getStringExtra("id");
+            groupName = groupsIntent.getStringExtra("name");
         }
-        else{
-            teacherId = groupsIntent.getStringExtra("teacher_id");
-            teacherName = groupsIntent.getStringExtra("teacher_name");
+        else if (userType == UserType.TEACHER){
+            teacherId = groupsIntent.getStringExtra("id");
+            teacherName = groupsIntent.getStringExtra("name");
         }
 
         // сохраняем тип пользователя и его айди и настраиваем лейауты для перевернутого экрана
@@ -106,7 +95,7 @@ public class ScheduleActivity extends AppCompatActivity {
         if (userType == UserType.STUDENT){
             scheduleForString = groupName;
         }
-        else{
+        else if (userType == UserType.TEACHER){
             scheduleForString = teacherName;
         }
         scheduleForText.setText(scheduleForString);
@@ -171,14 +160,14 @@ public class ScheduleActivity extends AppCompatActivity {
         Boolean isNotificationEnabled = sharedPreferencesNotification.getBoolean("isEnabled", true);
         Boolean isNotificationServiceStarted = sharedPreferencesNotification.getBoolean("isStarted", false);
 
-        if(isNotificationEnabled && !isNotificationServiceStarted) {
+        //if(isNotificationEnabled && !isNotificationServiceStarted) {
             Intent intent = new Intent(this, NewScheduleReleasedReciever.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), CHECK_PERIOD_SECONDS * 1000, pendingIntent);
 
             setIsNotificationServiceStarted(true);
-        }
+        //}
     }
 
     private void setIsNotificationServiceStarted(Boolean isStarted){
@@ -208,32 +197,22 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     public void saveData(){
-        // сохраняем выбранную группу
-        FileOutputStream fos = null;
-        try{
-            // открываем файл и записываем данные
-            fos = openFileOutput(Constants.FILENAME, MODE_PRIVATE);
-            String data = "";
-            if (userType == UserType.STUDENT){
-                data = "STUDENT:" + groupId + ":" + groupName;
-            }
-            else{
-                data = "TEACHER:" + teacherId + ":" + teacherName;
-            }
 
-            fos.write(data.getBytes());
+        scheduleData = getSharedPreferences("ScheduleData", Context.MODE_PRIVATE);
+        scheduleDataEditor = scheduleData.edit();
+        // сохраняем выбранную группу или преподавателя
+
+        scheduleDataEditor.putString("userType", userType.toString());
+        if (userType == UserType.STUDENT) {
+            scheduleDataEditor.putString("id", groupId);
+            scheduleDataEditor.putString("name", groupName);
         }
-        catch (IOException ex){
-            System.out.println("error while writing to file");
+        else if (userType == UserType.TEACHER) {
+            scheduleDataEditor.putString("id", teacherId);
+            scheduleDataEditor.putString("name", teacherName);
         }
-        finally {
-            try{
-                if (fos != null) fos.close();
-            }
-            catch (IOException ex){
-                System.out.println("error while closing file stream");
-            }
-        }
+
+        scheduleDataEditor.apply();
     }
 
     // при перевороте телефона нужно чтоб данные сохранялись
