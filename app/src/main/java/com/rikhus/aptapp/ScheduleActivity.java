@@ -37,6 +37,7 @@ public class ScheduleActivity extends ThemedActivity {
     Calendar dateAndTime = Calendar.getInstance();
     TextView textViewDate;
     TextView scheduleForText;
+    LinearLayout scheduleForTextLayout;
     LinearLayout dateSelectMenu;
     LinearLayout menuButton;
 
@@ -50,10 +51,6 @@ public class ScheduleActivity extends ThemedActivity {
 
     SimpleDateFormat sdf;
     SubjectAdapter adapter;
-
-    LinearLayout.LayoutParams dateMenuParams;
-    LinearLayout.LayoutParams scheduleForTextParams;
-    LinearLayout.LayoutParams scheduleRecyclerViewParams;
 
     SharedPreferences scheduleData;
     SharedPreferences.Editor scheduleDataEditor;
@@ -88,7 +85,6 @@ public class ScheduleActivity extends ThemedActivity {
 
         // сохраняем тип пользователя и его айди и настраиваем лейауты для перевернутого экрана
         saveData();
-        setupLayoutsForViews();
 
         scheduleForText = findViewById(R.id.scheduleForText);
         String scheduleForString = "";
@@ -104,8 +100,7 @@ public class ScheduleActivity extends ThemedActivity {
         textViewDate = findViewById(R.id.textViewDate);
         scheduleRecyclerView = findViewById(R.id.scheduleRecyclerView);
         dateSelectMenu = findViewById(R.id.dateSelectMenu);
-        scheduleRecyclerViewParams.leftMargin = 20;
-        scheduleRecyclerViewParams.rightMargin = 20;
+        scheduleForTextLayout = findViewById(R.id.scheduleForTextLayout);
         menuButton = findViewById(R.id.menuButton);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,32 +163,16 @@ public class ScheduleActivity extends ThemedActivity {
 
             setIsNotificationServiceStarted(true);
         //}
+
     }
+
+
 
     private void setIsNotificationServiceStarted(Boolean isStarted){
         SharedPreferences preferences = getSharedPreferences("Notification", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean("isStarted", isStarted);
         editor.apply();
-    }
-
-    public void setupLayoutsForViews(){
-        // переменные разметки для изменения активити при перевороте экрана
-        dateMenuParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
-                2.0f
-        );
-         scheduleForTextParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
-                1.0f
-        );
-        scheduleRecyclerViewParams  = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
-                12.0f
-        );
     }
 
     public void saveData(){
@@ -232,33 +211,6 @@ public class ScheduleActivity extends ThemedActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        // немного изменяем разметку для лучшего отображения
-        int orientation = getResources().getConfiguration().orientation;
-        if(orientation == Configuration.ORIENTATION_PORTRAIT){
-            dateMenuParams.weight = 2.0f;
-
-            scheduleForTextParams.bottomMargin = 10;
-            scheduleForTextParams.topMargin = 10;
-
-            scheduleRecyclerViewParams.topMargin = 10;
-            scheduleRecyclerViewParams.bottomMargin = 20;
-
-            dateSelectMenu.setLayoutParams(dateMenuParams);
-            scheduleForText.setLayoutParams(scheduleForTextParams);
-            scheduleRecyclerView.setLayoutParams(scheduleRecyclerViewParams);
-        }
-        else if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-            dateMenuParams.weight = 3.0f;
-            scheduleForTextParams.bottomMargin = 5;
-            scheduleForTextParams.topMargin = 5;
-            scheduleRecyclerViewParams.topMargin = 0;
-            scheduleRecyclerViewParams.bottomMargin = 0;
-
-            dateSelectMenu.setLayoutParams(dateMenuParams);
-            scheduleForText.setLayoutParams(scheduleForTextParams);
-            scheduleRecyclerView.setLayoutParams(scheduleRecyclerViewParams);
-        }
-
         try {
             dateAndTime.setTime(sdf.parse(savedInstanceState.getString(DATE_VARIABLE)));
             textViewDate.setText(formatDate(dateAndTime));
@@ -269,10 +221,11 @@ public class ScheduleActivity extends ThemedActivity {
             adapter = Constants.adapter;
             if (adapter == null) {
                 scheduleGetter = new ScheduleGetter();
+
                 if(userType == UserType.STUDENT){
                     scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
                 }
-                else{
+                else if(userType == UserType.TEACHER){
                     scheduleGetter.execute(teacherId, sdf.format(dateAndTime.getTime()));
                 }
             }

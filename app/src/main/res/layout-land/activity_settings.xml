@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    tools:context=".SettingsActivity"
+    android:padding="20dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.3"
+        android:orientation="horizontal">
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Настройки"
+                android:textColor="?attr/apt_text_color"
+                android:textSize="20sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="?attr/colorAccent"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="2">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="start|center"
+            android:layout_marginLeft="5dp"
+            android:text="Уведомление о выходе нового расписания"
+            android:textSize="18sp"
+            android:textColor="?attr/apt_text_color"
+            android:layout_weight="3"
+            android:layout_marginStart="5dp" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp" />
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+        <Button
+            android:id="@+id/lightThemeButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Светлая тема"
+            android:onClick="selectTheme"
+            style="@style/SettingsButtonSelected"
+            android:layout_weight="5"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"/>
+        <Button
+            android:id="@+id/darkThemeButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            style="@style/SettingsButtonNotSelected"
+            android:onClick="selectTheme"
+            android:text="Темная тема"
+            android:layout_weight="5"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.8"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+        <Button
+            android:id="@+id/studentButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="Студент"
+            style="@style/SettingsButtonSelected"
+            android:layout_weight="5"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"/>
+        <Button
+            android:id="@+id/teacherButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            style="@style/SettingsButtonNotSelected"
+            android:text="Преподаватель"
+            android:layout_weight="5"/>
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"/>
+</LinearLayout>
