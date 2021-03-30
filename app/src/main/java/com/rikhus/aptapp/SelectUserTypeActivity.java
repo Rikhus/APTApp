@@ -35,16 +35,17 @@ public class SelectUserTypeActivity extends ThemedActivity {
         String userType = scheduleData.getString("userType", null);
         String id = scheduleData.getString("id", null);
         String name = scheduleData.getString("name", null);
+
         // если до этого открывалось расписание это не перезагрузка активити при перевороте телефона перекидываем на ту же группу
+        if (savedInstanceState == null) {
+            Intent intent = new Intent(this, ScheduleActivity.class);
 
-
-        Intent intent = new Intent(this, ScheduleActivity.class);
-
-        if(userType != null && id != null && name != null) {
-            intent.putExtra("user_type", UserType.valueOf(userType));
-            intent.putExtra("id", id);
-            intent.putExtra("name", name);
-            startActivity(intent);
+            if (userType != null && id != null && name != null) {
+                intent.putExtra("user_type", UserType.valueOf(userType));
+                intent.putExtra("id", id);
+                intent.putExtra("name", name);
+                startActivity(intent);
+            }
         }
 
         fragmentChoose = findViewById(R.id.fragmentChoose);

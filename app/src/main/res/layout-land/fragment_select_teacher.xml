@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".SelectCourseFragment">
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.4"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:gravity="center"
+            android:text="@string/choose_teacher"
+            android:textColor="?attr/apt_text_color"
+            android:textSize="20sp" />
+        <include
+            android:id="@+id/menuButton"
+            layout="@layout/menu_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:clickable="true" />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"/>
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:theme="@style/MyTextInputLabel">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputTeacherName"
+            android:layout_width="match_parent"
+            android:maxLines="1"
+            android:layout_height="match_parent"
+            android:hint="@string/enter_name"
+            android:textColor="?attr/apt_text_color"
+            android:inputType="textPersonName"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <ListView
+        android:id="@+id/listViewTeachers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:scrollbars="none"
+        android:background="@drawable/rounded_element"
+        android:backgroundTint="?attr/apt_all_subgroups_color"/>
+</LinearLayout>
