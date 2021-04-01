@@ -23,11 +23,12 @@ public class SettingsActivity extends ThemedActivity {
     Button lightThemeButton;
     Button darkThemeButton;
     SwitchCompat switchScheduleNotification;
+    String themeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
-        String themeName = sharedPreferences.getString("ThemeName", "light");
+        themeName = sharedPreferences.getString("ThemeName", "light");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
@@ -37,14 +38,17 @@ public class SettingsActivity extends ThemedActivity {
         darkThemeButton = findViewById(R.id.darkThemeButton);
 
         // выставляем кнопкам стили в зависимости от того, какая тема активна
+        // и соответствующую кнопку делаем некликабельной
         switch (themeName){
             case ("light"):
                 Paris.styleBuilder(lightThemeButton).add(R.style.SettingsButtonSelected).apply();
                 Paris.styleBuilder(darkThemeButton).add(R.style.SettingsButtonNotSelected).apply();
+                lightThemeButton.setClickable(false);
                 break;
             case ("dark"):
                 Paris.styleBuilder(lightThemeButton).add(R.style.SettingsButtonNotSelected).apply();
                 Paris.styleBuilder(darkThemeButton).add(R.style.SettingsButtonSelected).apply();
+                darkThemeButton.setClickable(false);
                 break;
         }
 
@@ -104,9 +108,11 @@ public class SettingsActivity extends ThemedActivity {
     public void selectTheme(View view) {
         switch (view.getId()){
             case (R.id.lightThemeButton):
+                // устанавливаем тему
                 setThemeName("light");
                 break;
             case (R.id.darkThemeButton):
+                // устанавливаем тему
                 setThemeName("dark");
                 break;
         }

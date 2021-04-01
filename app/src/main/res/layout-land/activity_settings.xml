@@ -109,32 +109,10 @@
         android:layout_height="0dp"
         android:layout_weight="0.8"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2">
-        <Button
-            android:id="@+id/studentButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Студент"
-            style="@style/SettingsButtonSelected"
-            android:layout_weight="5"/>
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3"/>
-        <Button
-            android:id="@+id/teacherButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            style="@style/SettingsButtonNotSelected"
-            android:text="Преподаватель"
-            android:layout_weight="5"/>
-    </LinearLayout>
+
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="6"/>
+        android:layout_weight="8"/>
 </LinearLayout>

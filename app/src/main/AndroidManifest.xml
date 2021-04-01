@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/LightTheme"
         android:versionCode="2"
-        android:versionName="2.8"
+        android:versionName="2.11"
         android:windowSoftInputMode="adjustNothing">
         <activity android:name=".SettingsActivity" />
         <activity
