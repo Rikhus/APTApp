@@ -44,9 +44,12 @@
                 android:textColor="?attr/apt_text_color"
                 android:layout_weight="3"
                 android:layout_marginStart="5dp" />
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchScheduleNotification"
                 android:layout_width="0dp"
+                android:checked="true"
                 android:layout_height="match_parent"
+                android:theme="@style/MySwitch"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="5dp" />
@@ -90,32 +93,9 @@
             android:layout_height="0dp"
             android:layout_weight="0.5"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5">
-        <Button
-            android:id="@+id/studentButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Студент"
-            style="@style/SettingsButtonSelected"
-            android:layout_weight="5"/>
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3"/>
-        <Button
-            android:id="@+id/teacherButton"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            style="@style/SettingsButtonNotSelected"
-            android:text="Преподаватель"
-            android:layout_weight="5"/>
-    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"/>
+        android:layout_weight="11.5"/>
 </LinearLayout>

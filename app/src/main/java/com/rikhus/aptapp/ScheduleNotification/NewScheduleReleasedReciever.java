@@ -69,8 +69,7 @@ public class NewScheduleReleasedReciever extends BroadcastReceiver {
             }
 
             // тут просто получаем последнюю дату
-            Date today = new Date();
-            Date lastScheduleDay = today;
+            Date lastScheduleDay = new Date();
             try {
                 lastScheduleDay = sdf.parse(lastScheduleDayString);
             } catch (ParseException e) {
@@ -79,18 +78,22 @@ public class NewScheduleReleasedReciever extends BroadcastReceiver {
 
             // если уведомления на новый день я еще не выводил нужно его вывести
             String notificationDate = notificationData.getString("notificationDate", sdf.format(new Date(0)));
+            Date lastNotificatedDay = new Date(0);
             try {
-                if (lastScheduleDay.after(sdf.parse(notificationDate))){
-                    editor = notificationData.edit();
-                    editor.putString("notificationDate", lastScheduleDayString);
-                    editor.putBoolean("isNotified", false);
-                    editor.apply();
-                }
+                lastNotificatedDay = sdf.parse(notificationDate);
+
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+            if (lastScheduleDay.after(lastNotificatedDay)){
+                editor = notificationData.edit();
+                editor.putString("notificationDate", lastScheduleDayString);
+                editor.putBoolean("isNotified", false);
+                editor.apply();
+            }
             // если появилась новая дата то вышло расписание
-            if (lastScheduleDay.after(today)){
+            if (lastScheduleDay.after(new Date())){
                 return true;
             }
             return false;

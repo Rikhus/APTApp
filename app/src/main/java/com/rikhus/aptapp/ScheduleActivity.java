@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -44,20 +45,14 @@ public class ScheduleActivity extends ThemedActivity {
     ScheduleGetter scheduleGetter;
 
     UserType userType;
-    String groupId;
-    String groupName;
-    String teacherId;
-    String teacherName;
+    String Id;
+    String Name;
 
     SimpleDateFormat sdf;
     SubjectAdapter adapter;
 
     SharedPreferences scheduleData;
     SharedPreferences.Editor scheduleDataEditor;
-
-    private final String DATE_VARIABLE = "DATE_VARIABLE";
-    private final int CHECK_PERIOD_SECONDS = 300;
-    //private final int CHECK_PERIOD_SECONDS = 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,27 +69,15 @@ public class ScheduleActivity extends ThemedActivity {
         userType = (UserType) groupsIntent.getSerializableExtra("user_type");
 
         // в зависимости от типа пользователя получаем его данные
-        if (userType == UserType.STUDENT){
-            groupId = groupsIntent.getStringExtra("id");
-            groupName = groupsIntent.getStringExtra("name");
-        }
-        else if (userType == UserType.TEACHER){
-            teacherId = groupsIntent.getStringExtra("id");
-            teacherName = groupsIntent.getStringExtra("name");
-        }
 
-        // сохраняем тип пользователя и его айди и настраиваем лейауты для перевернутого экрана
+        Id = groupsIntent.getStringExtra("id");
+        Name = groupsIntent.getStringExtra("name");
+
+        // сохраняем тип пользователя и его айди
         saveData();
 
         scheduleForText = findViewById(R.id.scheduleForText);
-        String scheduleForString = "";
-        if (userType == UserType.STUDENT){
-            scheduleForString = groupName;
-        }
-        else if (userType == UserType.TEACHER){
-            scheduleForString = teacherName;
-        }
-        scheduleForText.setText(scheduleForString);
+        scheduleForText.setText(Name);
 
         // инициализация графических элементов
         textViewDate = findViewById(R.id.textViewDate);
@@ -118,13 +101,7 @@ public class ScheduleActivity extends ThemedActivity {
             if (groupsIntent.getStringExtra("date_to_show_schedule") == null) {
                 // запуск автоматического подбора даты и расписания
                 ScheduleParsingStarter scheduleParsingStarter = new ScheduleParsingStarter();
-
-                if (userType == UserType.STUDENT) {
-                    scheduleParsingStarter.execute(groupId);
-                }
-                if (userType == UserType.TEACHER) {
-                    scheduleParsingStarter.execute(teacherId);
-                }
+                scheduleParsingStarter.execute(Id);
             }
 
             // если запущено с уведомления
@@ -132,12 +109,8 @@ public class ScheduleActivity extends ThemedActivity {
                 // открываем расписание на следующий день
                 String dateToShowScheduleString = groupsIntent.getStringExtra("date_to_show_schedule");
                 ScheduleGetter scheduleGetter = new ScheduleGetter();
-                if (userType == UserType.STUDENT) {
-                    scheduleGetter.execute(groupId, dateToShowScheduleString);
-                }
-                if (userType == UserType.TEACHER) {
-                    scheduleGetter.execute(teacherId, dateToShowScheduleString);
-                }
+                scheduleGetter.execute(Id, dateToShowScheduleString);
+
                 try {
                     // выводим дату на экране
                     Calendar dateToShowSchedule = Calendar.getInstance();
@@ -155,14 +128,14 @@ public class ScheduleActivity extends ThemedActivity {
         Boolean isNotificationEnabled = sharedPreferencesNotification.getBoolean("isEnabled", true);
         Boolean isNotificationServiceStarted = sharedPreferencesNotification.getBoolean("isStarted", false);
 
-        //if(isNotificationEnabled && !isNotificationServiceStarted) {
+        if(isNotificationEnabled && !isNotificationServiceStarted) {
             Intent intent = new Intent(this, NewScheduleReleasedReciever.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0);
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), CHECK_PERIOD_SECONDS * 1000, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), Constants.CHECK_PERIOD_SECONDS * 1000, pendingIntent);
 
             setIsNotificationServiceStarted(true);
-        //}
+        }
 
     }
 
@@ -182,14 +155,8 @@ public class ScheduleActivity extends ThemedActivity {
         // сохраняем выбранную группу или преподавателя
 
         scheduleDataEditor.putString("userType", userType.toString());
-        if (userType == UserType.STUDENT) {
-            scheduleDataEditor.putString("id", groupId);
-            scheduleDataEditor.putString("name", groupName);
-        }
-        else if (userType == UserType.TEACHER) {
-            scheduleDataEditor.putString("id", teacherId);
-            scheduleDataEditor.putString("name", teacherName);
-        }
+        scheduleDataEditor.putString("id", Id);
+        scheduleDataEditor.putString("name", Name);
 
         scheduleDataEditor.apply();
     }
@@ -198,7 +165,7 @@ public class ScheduleActivity extends ThemedActivity {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         // тут запоминаем дату
-        outState.putString(DATE_VARIABLE, sdf.format(dateAndTime.getTime()));
+        outState.putString(Constants.DATE_VARIABLE, sdf.format(dateAndTime.getTime()));
 
         // засовываем адаптер в класс с константами
         if (adapter != null) Constants.adapter = adapter;
@@ -212,7 +179,7 @@ public class ScheduleActivity extends ThemedActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         try {
-            dateAndTime.setTime(sdf.parse(savedInstanceState.getString(DATE_VARIABLE)));
+            dateAndTime.setTime(sdf.parse(savedInstanceState.getString(Constants.DATE_VARIABLE)));
             textViewDate.setText(formatDate(dateAndTime));
 
             if (scheduleGetter != null){
@@ -221,13 +188,7 @@ public class ScheduleActivity extends ThemedActivity {
             adapter = Constants.adapter;
             if (adapter == null) {
                 scheduleGetter = new ScheduleGetter();
-
-                if(userType == UserType.STUDENT){
-                    scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
-                }
-                else if(userType == UserType.TEACHER){
-                    scheduleGetter.execute(teacherId, sdf.format(dateAndTime.getTime()));
-                }
+                scheduleGetter.execute(Id, sdf.format(dateAndTime.getTime()));
             }
             else{
                 scheduleRecyclerView.setAdapter(adapter);
@@ -241,11 +202,11 @@ public class ScheduleActivity extends ThemedActivity {
     // выбор даты
     public void selectDate(View view) {
         new DatePickerDialog(ScheduleActivity.this, R.style.DialogTheme, selectDateListener,
-                dateAndTime.get(Calendar.YEAR),
-                dateAndTime.get(Calendar.MONTH),
-                dateAndTime.get(Calendar.DAY_OF_MONTH))
-                .show();
-    }
+                    dateAndTime.get(Calendar.YEAR),
+                    dateAndTime.get(Calendar.MONTH),
+                    dateAndTime.get(Calendar.DAY_OF_MONTH))
+                    .show();
+       }
 
     // запихиваем выбранную дату в dateAndTime
     DatePickerDialog.OnDateSetListener selectDateListener = new DatePickerDialog.OnDateSetListener() {
@@ -260,12 +221,8 @@ public class ScheduleActivity extends ThemedActivity {
                 scheduleGetter.cancel(true);
             }
             scheduleGetter = new ScheduleGetter();
-            if (userType == UserType.STUDENT){
-                scheduleGetter.execute(groupId, sdf.format(dateAndTime.getTime()));
-            }
-            else{
-                scheduleGetter.execute(teacherId, sdf.format(dateAndTime.getTime()));
-            }
+            scheduleGetter.execute(Id, sdf.format(dateAndTime.getTime()));
+
         }
     };
 

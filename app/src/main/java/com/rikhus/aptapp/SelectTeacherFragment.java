@@ -64,8 +64,8 @@ public class SelectTeacherFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), ScheduleActivity.class);
                 intent.putExtra("user_type", UserType.TEACHER);
-                intent.putExtra("teacher_id", teachersToShow.get(position).getId());
-                intent.putExtra("teacher_name", teachersToShow.get(position).getName());
+                intent.putExtra("id", teachersToShow.get(position).getId());
+                intent.putExtra("name", teachersToShow.get(position).getName());
 
                 startActivity(intent);
             }
